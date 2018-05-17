@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".VerifyCodeActivity">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enter the code that was sent to"
+        android:textColor="#d71b1b1b"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:padding="12dp"
+        android:layout_marginTop="20dp"/>
+
+
+    <TextView
+        android:id="@+id/phoneTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="#ff0101"
+        android:textSize="18sp"
+        android:gravity="center"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="30dp">
+
+        <EditText
+            android:id="@+id/code_value_1"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:inputType="number"
+            android:maxLines="1"
+            android:maxLength="1"
+            android:background="@drawable/edit_text_design"
+            android:layout_marginRight="2dp"/>
+
+        <EditText
+            android:id="@+id/code_value_2"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:maxLines="1"
+            android:maxLength="1"
+            android:inputType="number"
+            android:background="@drawable/edit_text_design"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"/>
+
+        <EditText
+            android:id="@+id/code_value_3"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:maxLines="1"
+            android:maxLength="1"
+            android:inputType="number"
+            android:background="@drawable/edit_text_design"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"/>
+
+
+        <EditText
+            android:id="@+id/code_value_4"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:maxLines="1"
+            android:maxLength="1"
+            android:inputType="number"
+            android:background="@drawable/edit_text_design"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"/>
+
+        <EditText
+            android:id="@+id/code_value_5"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:maxLines="1"
+            android:maxLength="1"
+            android:inputType="number"
+            android:background="@drawable/edit_text_design"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"/>
+
+        <EditText
+            android:id="@+id/code_value_6"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:maxLines="1"
+            android:maxLength="1"
+            android:inputType="number"
+            android:background="@drawable/edit_text_design"
+            android:layout_marginLeft="2dp"/>
+
+    </LinearLayout>
+
+    <com.dd.processbutton.FlatButton
+        android:id="@+id/continueBTN"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:text="Continue"
+        app:pb_cornerRadius="25sp"
+        android:textAllCaps="false"
+        android:background="#ff0101"
+        android:textColor="#fff"
+        android:onClick="continueMain"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="I didn't get a code"
+        android:textColor="#ff0101"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:layout_marginTop="30dp"
+        android:onClick="resendMeCode"/>
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tap Continue to accept's Facebook's Terms, Data Policy, cookie use and the Privacy Oilicy and Terms of Services of Ride Share."
+        android:textSize="10sp"
+        android:gravity="center"
+        android:layout_margin="20dp"
+        android:textColor="#e52d2c2c"/>
+
+</LinearLayout>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+
+    android:padding="10sp"
+
+    android:layout_height="match_parent">
+
+    <LinearLayout
+
+        android:id="@+id/linearFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+
+        android:padding="10sp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/holo_orange_light"
+            android:textSize="30sp"
+             android:layout_gravity="center"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/quesTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:textColor="@android:color/white"
+            android:text="TextView" />
+        <com.dd.processbutton.iml.SubmitProcessButton
+            android:id="@+id/btnOption1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Option 1"
+
+            android:layout_marginTop="16sp"
+            custom:pb_cornerRadius="25sp"
+            android:textColor="@android:color/black"
+            custom:pb_colorComplete="@color/green_complete"
+            custom:pb_colorNormal="@color/colorDefault"
+            custom:pb_colorPressed="@color/colorDefault"
+            custom:pb_colorProgress="@color/errorProgress"
+
+            custom:pb_colorError="@color/red_error" />
+        <com.dd.processbutton.iml.SubmitProcessButton
+            android:id="@+id/btnOption2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Option 2"
+            custom:pb_cornerRadius="25sp"
+
+            android:layout_marginTop="16sp"
+            android:background="@drawable/btnshape"
+            android:textColor="@android:color/black"
+            custom:pb_colorComplete="@color/green_complete"
+            custom:pb_colorNormal="@color/colorDefault"
+            custom:pb_colorPressed="@color/colorDefault"
+            custom:pb_colorProgress="@color/errorProgress"
+
+            custom:pb_colorError="@color/red_error" />
+        <com.dd.processbutton.iml.SubmitProcessButton
+            android:id="@+id/btnOption3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Option 2"
+            custom:pb_cornerRadius="25sp"
+
+            android:layout_marginTop="16sp"
+            android:textColor="@android:color/black"
+            custom:pb_colorComplete="@color/green_complete"
+            custom:pb_colorNormal="@color/colorDefault"
+            custom:pb_colorPressed="@color/colorDefault"
+            custom:pb_colorProgress="@color/errorProgress"
+            android:layout_marginBottom="20sp"
+            custom:pb_colorError="@color/red_error" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="gone"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnsubmit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="SUBMIT" />
+
+                <Button
+                    android:id="@+id/btnNext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="NEXT" />
+            </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>

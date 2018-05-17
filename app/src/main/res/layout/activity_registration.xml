@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Registration">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enter your mobile number"
+        android:textColor="#d71b1b1b"
+        android:textSize="18sp"
+        android:paddingTop="80dp"
+        android:gravity="center"
+        android:layout_marginBottom="20dp"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="20dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+
+            android:text="+880"
+            android:textColor="#e52d2c2c"
+            android:textSize="18sp"
+            android:background="@drawable/edit_text_design"
+            android:layout_marginRight="4dp"
+            android:padding="8dp"/>
+
+
+        <EditText
+            android:id="@+id/phoneET"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="4"
+            android:textColor="#e52d2c2c"
+            android:textSize="18sp"
+            android:background="@drawable/edit_text_design"
+            android:layout_marginLeft="4dp"
+            android:padding="8dp"
+            android:inputType="number"/>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tab Next to varify your account with account Kit powered by Facebook. You don't need a facebook account to use Account Kit. An SMS may be sent to varify your number. Message and data rates may apply."
+        android:textSize="10sp"
+        android:layout_margin="20dp"
+        android:textColor="#e52d2c2c"/>
+
+    <com.dd.processbutton.FlatButton
+        android:id="@+id/nextBTN"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="Next"
+        android:textAllCaps="false"
+       app:pb_cornerRadius="25sp"
+        android:textColor="#fff"
+        android:onClick="varify"/>
+</LinearLayout>
