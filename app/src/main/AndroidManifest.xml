@@ -11,12 +11,12 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
+        android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launchern_round"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name="android.support.multidex.MultiDexApplication"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity2">
@@ -24,7 +24,7 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login2"></activity>
+            android:label="@string/title_activity_login2" />
         <activity
             android:name=".LoginActivity3"
             android:label="@string/title_activity_login3" />
@@ -36,17 +36,40 @@
         <activity
             android:name=".TestDesignActivity"
             android:label="@string/title_activity_test_design"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity android:name=".FirstActivity" />
-        <activity android:name=".Registration">
+        <activity android:name=".Registration"></activity>
+        <activity android:name=".VerifyCodeActivity" />
+        <activity android:name=".UserProfile" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".FacebookLogin">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".VerifyCodeActivity" />
-        <activity android:name=".UserProfile"></activity>
+        <activity android:name=".ConfirmLoginActivity"></activity>
     </application>
 
 </manifest>

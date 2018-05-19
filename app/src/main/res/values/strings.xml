@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name"><b>BD CASH Q</b></string>
+    <string name="app_name"><b>মেধা</b></string>
     <string name="title_activity_login2">Sign in</string>
-    <string name="next_game"><b>NEXT GAME</b></string>
+
     <string name="line1"><b>Tomorrow 1 AM GMT+06:00</b></string>
     <string name="line2"><b>$ 5,000 prize</b></string>
     <!-- Strings related to login -->
@@ -16,7 +16,16 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="facebook_app_id">442342006214223</string>
+    <string name="fb_login_protocol_scheme">fb442342006214223</string>
+
 
     <string name="title_activity_login3">Sign in</string>
     <string name="title_activity_test_design">TestDesignActivity</string>
+    <!--First Activity-->
+    <string name="invite">আমন্ত্রণ জানান</string>
+    <string name="leaders">মেধাক্রম</string>
+    <string name="weekly_rank">সাপ্তাহিক মেধাক্রম</string>
+    <string name="next_game"><b>পরবর্তী কুইজ</b></string>
+    <string name="balance">জমা</string>
 </resources>
