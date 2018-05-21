@@ -48,6 +48,7 @@ private CallbackManager mCallbackMangager;
         {
             Intent intent=new Intent(FacebookLogin.this,FirstActivity.class);
             startActivity(intent);
+            finish();
         }
         mCallbackMangager = CallbackManager.Factory.create();
         LoginButton loginButton = findViewById(R.id.fblogin);

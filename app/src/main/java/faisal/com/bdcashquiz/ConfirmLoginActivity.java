@@ -69,6 +69,9 @@ private SharedPreferences sharedPreferences;
                     hmap.put("name",username);
                     hmap.put("phoneNumber",phoneNumber);
                     hmap.put("email",email);
+                    hmap.put("totalLife","1");
+                    hmap.put("gameLife","0");
+
                    SharedPreferences.Editor editor=sharedPreferences.edit();
                    editor.putString("phone",phoneNumber);
                    editor.commit();
@@ -79,6 +82,7 @@ private SharedPreferences sharedPreferences;
                         public void onSuccess(Void aVoid) {
                             Intent intent=new Intent(ConfirmLoginActivity.this,FirstActivity.class);
                             startActivity(intent);
+                            finish();
                         }
                     });
                 }else

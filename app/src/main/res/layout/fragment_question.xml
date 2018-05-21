@@ -2,11 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    android:orientation="horizontal"
 
     android:padding="10sp"
 
     android:layout_height="match_parent">
+
+
 
     <LinearLayout
 
@@ -14,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+
 
         android:padding="10sp"
         android:orientation="vertical">
@@ -34,21 +37,44 @@
             android:textSize="25sp"
             android:textColor="@android:color/white"
             android:text="TextView" />
-        <com.dd.processbutton.iml.SubmitProcessButton
-            android:id="@+id/btnOption1"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Option 1"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:layout_marginTop="10sp"
+            android:layout_height="wrap_content">
 
-            android:layout_marginTop="16sp"
-            custom:pb_cornerRadius="25sp"
-            android:textColor="@android:color/black"
-            custom:pb_colorComplete="@color/green_complete"
-            custom:pb_colorNormal="@color/colorDefault"
-            custom:pb_colorPressed="@color/colorDefault"
-            custom:pb_colorProgress="@color/errorProgress"
+            <com.dd.processbutton.iml.SubmitProcessButton
+                android:id="@+id/btnOption1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
 
-            custom:pb_colorError="@color/red_error" />
+
+                android:text="Option 1"
+                android:textColor="@android:color/black"
+                custom:pb_colorComplete="@color/green_complete"
+                custom:pb_colorError="@color/red_error"
+                custom:pb_colorNormal="@color/colorDefault"
+                custom:pb_colorPressed="@color/colorDefault"
+                custom:pb_colorProgress="@color/errorProgress"
+
+                custom:pb_cornerRadius="25sp" />
+            <TextView
+                android:layout_weight="3"
+
+                android:layout_width="match_parent"
+               android:visibility="gone"
+                android:textColor="@android:color/white"
+                android:textAlignment="center"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+           android:layout_weight="1"
+            android:layout_marginTop="10sp"
+            android:layout_height="wrap_content">
         <com.dd.processbutton.iml.SubmitProcessButton
             android:id="@+id/btnOption2"
             android:layout_width="match_parent"
@@ -56,7 +82,7 @@
             android:text="Option 2"
             custom:pb_cornerRadius="25sp"
 
-            android:layout_marginTop="16sp"
+            android:layout_weight="1"
             android:background="@drawable/btnshape"
             android:textColor="@android:color/black"
             custom:pb_colorComplete="@color/green_complete"
@@ -65,14 +91,31 @@
             custom:pb_colorProgress="@color/errorProgress"
 
             custom:pb_colorError="@color/red_error" />
+
+            <TextView
+                android:id="@+id/numberTextb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:gravity="center_vertical"
+                android:textAlignment="center"
+                android:visibility="gone"
+                android:textColor="@android:color/white"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="10sp"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
         <com.dd.processbutton.iml.SubmitProcessButton
             android:id="@+id/btnOption3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Option 2"
             custom:pb_cornerRadius="25sp"
+android:layout_weight="1"
 
-            android:layout_marginTop="16sp"
             android:textColor="@android:color/black"
             custom:pb_colorComplete="@color/green_complete"
             custom:pb_colorNormal="@color/colorDefault"
@@ -81,6 +124,17 @@
             android:layout_marginBottom="20sp"
             custom:pb_colorError="@color/red_error" />
 
+            <TextView
+                android:id="@+id/numberTextc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:textAlignment="center"
+                android:gravity="center_vertical"
+                android:visibility="gone"
+                android:textColor="@android:color/white"
+                 />
+        </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

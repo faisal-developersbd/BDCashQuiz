@@ -8,6 +8,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.content.res.AppCompatResources;
 import android.util.Log;
 import android.view.View;
@@ -16,14 +17,14 @@ import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.VideoView;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -33,13 +34,21 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import faisal.com.bdcashquiz.model.Questions;
+import faisal.com.bdcashquiz.model.userManage;
 
 public class MainLiveActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
 private LinearLayout linearLayout;
 private WebView webview;
 private android.app.FragmentManager manager;
 private VideoView videoView;
+private FloatingActionButton life1;
+private FloatingActionButton life2;
+    FloatingActionButton life3;
+    FirebaseAuth mAuth;
+    UserInfo info;
     private YouTubePlayerView mYouTubePlayerView;
 private ProgressDialog mDialog;
     public static final String APP_KEY="AIzaSyBgbP5yQ9KdRnl8GM9fqWxl-EQSNWkAFDg";
@@ -51,6 +60,11 @@ private ProgressDialog mDialog;
         setContentView(R.layout.activity_main_live);
         VIDEL_ID=getIntent().getStringExtra("videoId");
         Log.d("videoId","In Main: "+VIDEL_ID);
+         mAuth=FirebaseAuth.getInstance();
+         info=mAuth.getCurrentUser();
+         life1=findViewById(R.id.life1);
+         life2=findViewById(R.id.life2);
+         life3=findViewById(R.id.life3);
         realTimeMonitorUpdate();
         //webview use to call own site
 //        webview =(WebView)findViewById(R.id.webview);
@@ -82,8 +96,88 @@ private ProgressDialog mDialog;
       //  manager.beginTransaction().remove(framgentQuestion).commit();
        // playVideo();
     }
+    private boolean isGameStart=true;
+public void userManageStatus()
+{
+    FirebaseFirestore db=FirebaseFirestore.getInstance();
+    db.collection("userManage").whereEqualTo("photoUrl",""+info.getPhotoUrl()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        @Override
+        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+          List<DocumentChange> documentChange=  queryDocumentSnapshots.getDocumentChanges();
+          DocumentChange documentChange1=documentChange.get(0);
+            userManage manage=documentChange1.getDocument().toObject(userManage.class);
+            int gamelife=Integer.parseInt(manage.getGameLife());
+            switch (documentChange1.getType())
+          {
+              case ADDED:
+                  Log.d("datacheck","Data added"+manage.toString());
+             // if(gamelife!=0)
+                  displayLife(gamelife);
+              break;
+              case MODIFIED:
+                  Log.d("datacheck","Data added"+manage.toString());
+                  displayLife(Integer.parseInt(manage.getGameLife()));
+                  break;
+              default:break;
+          }
+//            List<DocumentSnapshot> documentSnapshotList=queryDocumentSnapshots.getDocuments();
+//            DocumentSnapshot documentSnapshot=documentSnapshotList.get(0);
+//            Log.d("datacheck",documentSnapshot.getData().toString());
+        }
+    });
+
+//    db.collection("userMange").document(info.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+//        @Override
+//        public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+//         //   switch (documentSnapshot.)
+//            //userManage manage=documentSnapshot.toObject(userManage.class);
+//            Log.d("datacheck",""+documentSnapshot.getData());
+//            if(e!=null)
+//                Log.d("datacheck","Error: "+e);
+//            //switch (documentSnapshot.ty)
+//           // Toast.makeText(getBaseContext(),"Data: "+documentSnapshot.toString(),Toast.LENGTH_LONG).show();
+////           if(isGameStart==true) {
+////
+//
+//
+//
+//        }
+//    });
+}
+public void displayLife(int life)
+{
+
+
+                   switch (life){
+                       case 0:
+                           life1.setVisibility(View.GONE);
+                           life2.setVisibility(View.GONE);
+                           life3.setVisibility(View.GONE);
+
+                           break;
+                       case 1:
+                           life1.setVisibility(View.VISIBLE);
+                           life2.setVisibility(View.GONE);
+                           life3.setVisibility(View.GONE);
+                           break;
+                       case 2:
+                           life1.setVisibility(View.VISIBLE);
+                           life2.setVisibility(View.VISIBLE);
+                           life3.setVisibility(View.GONE);
+                           break;
+                       case 3:
+                           life1.setVisibility(View.VISIBLE);
+                           life2.setVisibility(View.VISIBLE);
+                           life3.setVisibility(View.VISIBLE);
+                           break;
+                           default:break;
+                   }
+
+}
     public void realTimeMonitorUpdate()
     {
+        userManageStatus();
+        //Toast.makeText(getBaseContext(),"User Id: "+info.getUid(),Toast.LENGTH_LONG).show();
         FirebaseFirestore db=FirebaseFirestore.getInstance();
         db.collection("liveMonitor").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -97,10 +191,12 @@ private ProgressDialog mDialog;
                     Intent intent = new Intent(MainLiveActivity.this, FirstActivity.class);
 
                     startActivity(intent);
+                    finish();
                 }
             }
         });
     }
+  //  public void update
     public void playVideo()
     {
         String videoUrl="http://techslides.com/demos/sample-videos/small.webm";
@@ -133,20 +229,22 @@ private ProgressDialog mDialog;
     {
         framgentQuestion=new FramgentQuestion();
         framgentQuestion.setQuestions(questions);
-        manager.beginTransaction().replace(R.id.displayQuestionLayout,framgentQuestion).commit();
+        try {
+            manager.beginTransaction().replace(R.id.displayQuestionLayout, framgentQuestion).commit();
+        }catch(Exception e)
+        {
+
+        }
 
     }
     public void attendUser()
 
     {
+        FirebaseAuth mAuth=FirebaseAuth.getInstance();
+        UserInfo info=mAuth.getCurrentUser();
         HashMap<String,String> hashMap=new HashMap<>();
         FirebaseFirestore db=FirebaseFirestore.getInstance();
-        db.collection("liveuser").add(hashMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Log.d("usersubmit","user joined");
-            }
-        });
+        db.collection("liveuser").document(info.getUid()).set(hashMap);
     }
     ViewGroup.LayoutParams params;
     public void liveUpdate()
@@ -173,6 +271,7 @@ private ProgressDialog mDialog;
                           if(questions.getId()!=null)
                             loadQuestionFragment(questions);
                             appBarLayout.setVisibility(View.VISIBLE);
+                         //   isGameStart=true;
                             //Toast.makeText(getBaseContext(),questions.toString(),Toast.LENGTH_LONG).show();
                             break;
                         case MODIFIED:
@@ -184,6 +283,7 @@ manager.beginTransaction().remove(framgentQuestion).commit();
                             params.height= ViewGroup.LayoutParams.MATCH_PARENT;
                             params.width=ViewGroup.LayoutParams.MATCH_PARENT;
                             appBarLayout.setVisibility(View.GONE);
+                         //   isGameStart=false;
                             break;
                     }
                 }
