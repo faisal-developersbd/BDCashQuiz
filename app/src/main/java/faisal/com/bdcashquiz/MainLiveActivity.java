@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
@@ -97,6 +98,7 @@ private ProgressDialog mDialog;
        // playVideo();
     }
     private boolean isGameStart=true;
+    int gamelife;
 public void userManageStatus()
 {
     FirebaseFirestore db=FirebaseFirestore.getInstance();
@@ -106,7 +108,7 @@ public void userManageStatus()
           List<DocumentChange> documentChange=  queryDocumentSnapshots.getDocumentChanges();
           DocumentChange documentChange1=documentChange.get(0);
             userManage manage=documentChange1.getDocument().toObject(userManage.class);
-            int gamelife=Integer.parseInt(manage.getGameLife());
+             gamelife=Integer.parseInt(manage.getGameLife());
             switch (documentChange1.getType())
           {
               case ADDED:
@@ -144,21 +146,24 @@ public void userManageStatus()
 //        }
 //    });
 }
+View view;
 public void displayLife(int life)
 {
-
+//view=
 
                    switch (life){
                        case 0:
                            life1.setVisibility(View.GONE);
                            life2.setVisibility(View.GONE);
                            life3.setVisibility(View.GONE);
-
+                         //  Snackbar.make(,"Sorry You Are No More!!",Snackbar.LENGTH_LONG).setAction(null,null);
+                           Toast.makeText(getBaseContext(),"Sorry You Are No More!!",Toast.LENGTH_LONG).show();
                            break;
                        case 1:
                            life1.setVisibility(View.VISIBLE);
                            life2.setVisibility(View.GONE);
                            life3.setVisibility(View.GONE);
+                           Toast.makeText(getBaseContext(),"Warning! You are in danger position!!",Toast.LENGTH_LONG).show();
                            break;
                        case 2:
                            life1.setVisibility(View.VISIBLE);
@@ -169,6 +174,7 @@ public void displayLife(int life)
                            life1.setVisibility(View.VISIBLE);
                            life2.setVisibility(View.VISIBLE);
                            life3.setVisibility(View.VISIBLE);
+                           Toast.makeText(getBaseContext(),"You have lost one life!!",Toast.LENGTH_LONG).show();
                            break;
                            default:break;
                    }
@@ -225,10 +231,11 @@ public void displayLife(int life)
         });
     }
     FramgentQuestion framgentQuestion;
+
     public void loadQuestionFragment(Questions questions)
     {
         framgentQuestion=new FramgentQuestion();
-        framgentQuestion.setQuestions(questions);
+        framgentQuestion.setQuestions(questions,gamelife);
         try {
             manager.beginTransaction().replace(R.id.displayQuestionLayout, framgentQuestion).commit();
         }catch(Exception e)
@@ -278,8 +285,12 @@ public void displayLife(int life)
 
                             break;
                         case REMOVED:
-
+try{
 manager.beginTransaction().remove(framgentQuestion).commit();
+}catch(Exception ex)
+{
+
+}
                             params.height= ViewGroup.LayoutParams.MATCH_PARENT;
                             params.width=ViewGroup.LayoutParams.MATCH_PARENT;
                             appBarLayout.setVisibility(View.GONE);

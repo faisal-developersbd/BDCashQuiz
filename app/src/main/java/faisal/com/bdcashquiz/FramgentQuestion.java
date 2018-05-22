@@ -2,12 +2,15 @@ package faisal.com.bdcashquiz;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +22,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dd.processbutton.iml.SubmitProcessButton;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserInfo;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.transitionseverywhere.Fade;
@@ -27,7 +34,11 @@ import com.transitionseverywhere.TransitionManager;
 import com.transitionseverywhere.TransitionSet;
 import com.transitionseverywhere.extra.Scale;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import faisal.com.bdcashquiz.model.Questions;
+import faisal.com.bdcashquiz.model.userManage;
 
 public class FramgentQuestion extends Fragment {
     ViewGroup view;
@@ -50,10 +61,11 @@ public class FramgentQuestion extends Fragment {
     private SubmitProcessButton optn3;
     Context context;
     private String btnClicked=null;
-    private boolean isClikable;
-    private int lifeCount=1;
-
-
+    //private boolean isClikable;
+    private int lifeCount=0;
+    UserInfo info;
+    FirebaseAuth mAuth;
+    SharedPreferences sharedPreferences;
     public class AnsTimer extends CountDownTimer{
 
         public AnsTimer(long millisInFuture, long countDownInterval) {
@@ -84,7 +96,7 @@ public void setLifeCount(int life)
     public class MyTimer extends CountDownTimer {
         public MyTimer(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
-            isClikable=true;
+           // isClikable=true;
         }
 
         @Override
@@ -127,7 +139,7 @@ timverview.setText(""+(l/1000));
 
             TransitionManager.beginDelayedTransition(view);
             timverview.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
-            isClikable=false;
+           // isClikable=false;
             timer.start();
 
            // ansSubmit();
@@ -188,9 +200,44 @@ timverview.setText(""+(l/1000));
 
         }
     }
+    public void updateGameLife(final int lifeCount)
+    {
+
+        FirebaseFirestore db=FirebaseFirestore.getInstance();
+        db.collection("userManage").document(info.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                userManage manage=documentSnapshot.toObject(userManage.class);
+
+                Map<String,String> hmap=new HashMap<>();
+                hmap.put("name",manage.getName());
+                hmap.put("phoneNumber",manage.getPhoneNumber());
+                hmap.put("email",info.getEmail());
+                hmap.put("photoUrl",manage.getPhotoUrl());
+                hmap.put("balance",manage.getBalance());
+
+                hmap.put("totalLife",""+manage.getTotalLife());
+                hmap.put("gameLife",""+lifeCount);
+                FirebaseFirestore  db=FirebaseFirestore.getInstance();
+                db.collection("userManage").document(info.getUid()).set(hmap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("datacheck","Update life from question fragment");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("datacheck","error: "+e);
+                    }
+                });
+            }
+        });
+
+    }
     public void initAll()
     {
         //linearLayout=view.findViewsWithText(R.id.linearFragment);
+
         ansQuestion=new AnsQuestion();
         timverview=view.findViewById(R.id.timer);
 
@@ -203,10 +250,16 @@ timverview.setText(""+(l/1000));
         nextBtn=view.findViewById(R.id.btnNext);
         titleText=view.findViewById(R.id.quesTitle);
         linearLayout=view.findViewById(R.id.linearFragment);
+       // if(lifeCount>0){
         optn1=view.findViewById(R.id.btnOption1);
         optn2=view.findViewById(R.id.btnOption2);
         optn3=view.findViewById(R.id.btnOption3);
-        isClikable=true;
+
+       // }
+
+        mAuth=FirebaseAuth.getInstance();
+        sharedPreferences=getActivity().getBaseContext().getSharedPreferences("credentials", Context.MODE_PRIVATE);
+        info=mAuth.getCurrentUser();
         if(questions!=null) {
             optn1.setText(questions.getO1());
             optn2.setText(questions.getO2());
@@ -222,7 +275,7 @@ timverview.setText(""+(l/1000));
         optn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isClikable==true) {
+               // if(isClikable==true) {
                     btnClicked = "a";
 
                     GradientDrawable gradientDrawable = optn1.getProgressDrawable();
@@ -236,7 +289,7 @@ timverview.setText(""+(l/1000));
                     optn3.setProgressDrawable(gradientDrawable);
                     optn3.setProgress(0);
                     optn3.setText(questions.getO3());
-                }
+               // }
               //  optn2.se
 
             }
@@ -244,7 +297,7 @@ timverview.setText(""+(l/1000));
         optn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isClikable==true) {
+                //if(isClikable==true) {
                     btnClicked = "b";
 //                optn1.setBackgroundColor(getResources().getColor(R.color.colorDefault));
 //                optn2.setBackgroundColor(getResources().getColor(R.color.blue_pressed));
@@ -260,13 +313,13 @@ timverview.setText(""+(l/1000));
                     optn3.setProgressDrawable(gradientDrawable);
                     optn3.setProgress(0);
                     optn3.setText(questions.getO3());
-                }
+              //  }
             }
         });
         optn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isClikable==true) {
+             //   if(isClikable==true) {
                     btnClicked = "c";
 //                optn1.setBackgroundColor(getResources().getColor(R.color.colorDefault));
 //                optn2.setBackgroundColor(getResources().getColor(R.color.colorDefault));
@@ -282,10 +335,10 @@ timverview.setText(""+(l/1000));
                     optn2.setProgressDrawable(gradientDrawable);
                     optn2.setProgress(0);
                     optn2.setText(questions.getO2());
-                }
+              //  }
             }
         });
-
+        disableClickonCondition();
 
     }
 
@@ -293,8 +346,9 @@ timverview.setText(""+(l/1000));
         return questions;
     }
 
-    public void setQuestions(Questions questions) {
+    public void setQuestions(Questions questions,int lifeCount) {
         this.questions = questions;
+        this.lifeCount=lifeCount;
 //Toast.makeText(context,questions.toString(),Toast.LENGTH_LONG).show();
     }
     public void setAllError()
@@ -313,13 +367,31 @@ timverview.setText(""+(l/1000));
         optn3.setProgress(80);
 
     }
+    public void disableClickonCondition()
+    {
+//        FirebaseFirestore db=FirebaseFirestore.getInstance();
+//        db.collection("userManage").document(info.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//            @Override
+//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                lifeCount=Integer.parseInt(""+documentSnapshot.get("gameLife"));
+//            }
+//        });
+      //  Toast.makeText(getActivity().getBaseContext(),"Life Count Outside condition: "+lifeCount,Toast.LENGTH_LONG).show();
+        if(lifeCount<=0)
+            {
+                Toast.makeText(getActivity().getBaseContext(),"Life Count: "+lifeCount,Toast.LENGTH_LONG).show();
+                optn1.setClickable(false);
+                optn2.setClickable(false);
+                optn3.setClickable(false);
+}
+}
     public void ansUpdate()
     {
 
 //        optn1.setBackgroundColor(getResources().getColor(R.color.colorDefault));
 //        optn2.setBackgroundColor(getResources().getColor(R.color.colorDefault));
 //        optn3.setBackgroundColor(getResources().getColor(R.color.colorDefault));
-        isClikable=false;
+       // isClikable=false;
         linearLayout.setVisibility(View.VISIBLE);
        FirebaseFirestore db=FirebaseFirestore.getInstance();
       // if(ans.equals("a")) {
@@ -331,6 +403,12 @@ timverview.setText(""+(l/1000));
         if(!userAns.equals(ans))
         {
             lifeCount--;
+            updateGameLife(lifeCount);
+
+        }
+        if(lifeCount<=0)
+        {
+
             timverview.setText("ELIMINATED");
 
             Toast.makeText(getActivity().getBaseContext(),"You are eliminated!",Toast.LENGTH_LONG).show();
@@ -398,7 +476,7 @@ timverview.setText(""+(l/1000));
 //            optn3.setProgressDrawable(gradientDrawable);
 //           // optn3.setProgress(60);
 //        }
-        Toast.makeText(getActivity().getBaseContext(),"ANS: "+ans,Toast.LENGTH_LONG).show();
+      //  Toast.makeText(getActivity().getBaseContext(),"ANS: "+ans,Toast.LENGTH_LONG).show();
         db.collection("a").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {

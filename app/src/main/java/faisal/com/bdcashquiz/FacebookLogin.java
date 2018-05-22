@@ -23,11 +23,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 
 
 public class FacebookLogin extends AppCompatActivity {
 ImageButton fbloginbtn;
-
+UserInfo info;
 private CallbackManager mCallbackMangager;
     private FirebaseAuth mAuth;
     private SharedPreferences preferences;
@@ -40,6 +41,7 @@ private CallbackManager mCallbackMangager;
         setContentView(R.layout.activity_facebook_login);
 
         mAuth = FirebaseAuth.getInstance();
+        info=mAuth.getCurrentUser();
         preferences=getSharedPreferences("credentials", Context.MODE_PRIVATE);
 
         final String username=preferences.getString("name",null);
@@ -50,6 +52,7 @@ private CallbackManager mCallbackMangager;
             startActivity(intent);
             finish();
         }
+
         mCallbackMangager = CallbackManager.Factory.create();
         LoginButton loginButton = findViewById(R.id.fblogin);
         loginButton.setReadPermissions("email", "public_profile");
@@ -75,6 +78,7 @@ private CallbackManager mCallbackMangager;
         });
 
     }
+
     private void handleFacebookAccessToken(AccessToken token) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
 

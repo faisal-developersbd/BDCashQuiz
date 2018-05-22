@@ -7,6 +7,7 @@ public class userManage {
     private String photoUrl;
     private String totalLife;
     private String gameLife;
+    private String balance;
 
     public userManage(String name, String email, String phoneNumber, String photoUrl, String totalLife, String gameLife) {
         this.name = name;
@@ -66,6 +67,14 @@ public class userManage {
 
     public void setGameLife(String gameLife) {
         this.gameLife = gameLife;
+    }
+
+    public String getBalance() {
+        return balance;
+    }
+
+    public void setBalance(String balance) {
+        this.balance = balance;
     }
 
     @Override
