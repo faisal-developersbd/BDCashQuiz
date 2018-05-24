@@ -13,9 +13,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.dd.processbutton.FlatButton;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,6 +45,7 @@ private FirebaseAuth mAuth;
 private UserInfo info;
 private TextView lifeText;
 private SharedPreferences sharedPreferences;
+private FlatButton medacrom;
     private TextView balanceText;;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,7 @@ private SharedPreferences sharedPreferences;
         amountText=findViewById(R.id.amountText);
         lifeText=findViewById(R.id.lifeText);
         timeText=findViewById(R.id.timeText);
+        medacrom=findViewById(R.id.button2);
         mAuth=FirebaseAuth.getInstance();
         info=mAuth.getCurrentUser();
         sharedPreferences=getSharedPreferences("credentials", Context.MODE_PRIVATE);
@@ -71,7 +75,17 @@ private SharedPreferences sharedPreferences;
                 imgview.setImageDrawable(circularBitmapDrawable);
             }
         });
+
+        medacrom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(FirstActivity.this,LeaderBoardActivity.class);
+                startActivity(intent);
+            }
+        });
+
         realTimeUpdate();
+
     }
     String VideoId="";
     double balance;
@@ -196,4 +210,5 @@ private SharedPreferences sharedPreferences;
         Intent intent=new Intent(FirstActivity.this,new SettingsActivity().getClass());
         startActivity(intent);
     }
+
 }
