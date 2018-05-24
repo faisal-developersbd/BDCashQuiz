@@ -28,4 +28,8 @@
     <string name="weekly_rank">সাপ্তাহিক মেধাক্রম</string>
     <string name="next_game"><b>পরবর্তী কুইজ</b></string>
     <string name="balance">মোট আয়</string>
+    <string name="extra_life">Extra Life</string>
+    <string name="referral_text">Wrong answer? Keep playing with an Extra life. Get one every time a new HQ user signs
+    up with your referral code and plays their first game. They can be used once per game, except on the last question.
+    </string>
 </resources>

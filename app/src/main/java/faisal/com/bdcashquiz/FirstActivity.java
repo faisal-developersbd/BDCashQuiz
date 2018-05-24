@@ -10,6 +10,7 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -109,9 +110,15 @@ private SharedPreferences sharedPreferences;
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 balance=Double.parseDouble(""+documentSnapshot.get("balance"));
-                balanceText.setText("৳ "+balance);
+
+                balanceText.setText("৳ "+translateNumber(""+balance));
             }
         });
+    }
+    public String translateNumber(String number)
+    {
+     String output=number.replaceAll("0","০").replaceAll("1","১").replaceAll("2","২").replaceAll("3","৩").replaceAll("4","৪").replaceAll("5","৫").replaceAll("6","৬").replaceAll("7","৭").replaceAll("8","৮").replaceAll("9","৯");
+    return output;
     }
      FirebaseFirestore db;
     int maxLife;
@@ -176,5 +183,17 @@ private SharedPreferences sharedPreferences;
          });
 
 
+    }
+
+    public void nextActivity(View view) {
+        Intent intent=new Intent(FirstActivity.this,new ReferralCodeActivity().getClass());
+        intent.putExtra("code",info.getDisplayName());
+        startActivity(intent);
+       // finish();
+    }
+
+    public void goSettings(View view) {
+        Intent intent=new Intent(FirstActivity.this,new SettingsActivity().getClass());
+        startActivity(intent);
     }
 }

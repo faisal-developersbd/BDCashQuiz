@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -47,6 +48,7 @@ private android.app.FragmentManager manager;
 private VideoView videoView;
 private FloatingActionButton life1;
 private FloatingActionButton life2;
+private TextView watchTextView;
     FloatingActionButton life3;
     FirebaseAuth mAuth;
     UserInfo info;
@@ -67,6 +69,7 @@ private ProgressDialog mDialog;
          life2=findViewById(R.id.life2);
          life3=findViewById(R.id.life3);
         realTimeMonitorUpdate();
+        liveAttendUser();
         //webview use to call own site
 //        webview =(WebView)findViewById(R.id.webview);
 //
@@ -89,11 +92,11 @@ private ProgressDialog mDialog;
         mYouTubePlayerView.initialize(APP_KEY,this);
         Drawable drawable = AppCompatResources.getDrawable(getBaseContext(),R.drawable.ic_chatbackground);
         AppBarLayout layout=findViewById(R.id.chatbarlayout);
-        layout.setBackground(drawable);
+       // layout.setBackground(drawable);
         appBarLayout=findViewById(R.id.appBarLayout);
         appBarLayout.setBackground(drawable);
         appBarLayout.setVisibility(View.GONE);
-
+watchTextView=findViewById(R.id.watchText);
       //  manager.beginTransaction().remove(framgentQuestion).commit();
        // playVideo();
     }
@@ -328,9 +331,13 @@ manager.beginTransaction().remove(framgentQuestion).commit();
             });
             if (VIDEL_ID != null && !wasRestored) {
                 youTubePlayer.loadVideo(VIDEL_ID);
+                enableDisableView(mYouTubePlayerView,false);
+                mYouTubePlayerView.setClickable(false);
+                mYouTubePlayerView.setFocusable(false);
             }
 
         }
+
         //youTubePlayer.setPlaybackEventListener(false);
 //        youTubePlayer.setPlayerStateChangeListener(playerStateChangeListener);
 //        youTubePlayer.setPlaybackEventListener(playbackEventListener);
@@ -352,6 +359,23 @@ manager.beginTransaction().remove(framgentQuestion).commit();
 //        {
 //           // youTubePlayer.cueVideo(VIDEL_ID);
 //        }
+    }
+    public void liveAttendUser()
+    {
+        FirebaseFirestore db=FirebaseFirestore.getInstance();
+        db.collection("liveAttend").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @javax.annotation.Nullable FirebaseFirestoreException e) {
+                List<DocumentSnapshot> docs=queryDocumentSnapshots.getDocuments();
+                for(DocumentSnapshot documentSnapshot:docs)
+                {
+                    if(documentSnapshot.getId().equals("userNumber"));
+                    DocumentSnapshot document=documentSnapshot;
+                    String number=""+document.get("number");
+                    watchTextView.setText(number);
+                }
+            }
+        });
     }
     public YouTubePlayer.PlaybackEventListener playbackEventListener=new YouTubePlayer.PlaybackEventListener() {
         @Override

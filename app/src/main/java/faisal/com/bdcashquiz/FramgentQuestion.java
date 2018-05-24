@@ -35,6 +35,7 @@ import com.transitionseverywhere.TransitionSet;
 import com.transitionseverywhere.extra.Scale;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import faisal.com.bdcashquiz.model.Questions;
@@ -74,8 +75,9 @@ public class FramgentQuestion extends Fragment {
 
         @Override
         public void onTick(long l) {
-            if(l/1000==2) {
+            if(l/1000==1) {
                 setAllError();
+                liveAttend();
                 ansSubmit();
             }
         }
@@ -385,6 +387,41 @@ timverview.setText(""+(l/1000));
                 optn3.setClickable(false);
 }
 }
+int livea,liveb,livec,no,total;
+    int parsea,parseb,parsec;
+public void liveAttend()
+{
+    FirebaseFirestore db=FirebaseFirestore.getInstance();
+    db.collection("liveAttend").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        @Override
+        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+           List<DocumentSnapshot> documentSnapshot=queryDocumentSnapshots.getDocuments();
+           for(DocumentSnapshot document:documentSnapshot)
+           {
+               if(document.getId().equals("ansa"))
+               {
+                    livea=Integer.parseInt(""+document.get("number"));
+               }
+               else if(document.getId().equals("ansb"))
+               {
+                   liveb=Integer.parseInt(""+document.get("number"));
+               }
+               else if(document.getId().equals("ansc"))
+               {
+                   livec=Integer.parseInt(""+document.get("number"));
+               }
+               else if(document.getId().equals("no"))
+               {
+                   no=Integer.parseInt(""+document.get("number"));
+               }
+           }
+           total=livea+liveb+livec+no;
+           parsea=(livea*100)/total;
+           parseb=(liveb*100)/total;
+           parsec=(livec*100)/total;
+        }
+    });
+}
     public void ansUpdate()
     {
 
@@ -416,15 +453,18 @@ timverview.setText(""+(l/1000));
         if(ans.equals("b")) {
             GradientDrawable gradientDrawable = optn2.getProgressDrawable();
             gradientDrawable.setColor(getResources().getColor(R.color.successProgress));
-            optn2.setProgressDrawable(gradientDrawable);
+
             optn2.setProgress(100);
-            gradientDrawable.setColor(getResources().getColor(R.color.errorProgress));
-            optn1.setProgressDrawable(gradientDrawable);
+            optn2.setText(questions.getO2()+" ("+liveb+")");
+
+            GradientDrawable gradientDrawable2=optn1.getProgressDrawable();
+            gradientDrawable2.setColor(getResources().getColor(R.color.errorProgress));
+            optn1.setProgressDrawable(gradientDrawable2);
             optn1.setProgress(0);
-            optn1.setText(questions.getO1());
-            optn3.setProgressDrawable(gradientDrawable);
+            optn1.setText(questions.getO1()+" ("+livea+")");
+            optn3.setProgressDrawable(gradientDrawable2);
             optn3.setProgress(0);
-            optn3.setText(questions.getO3());
+            optn3.setText(questions.getO3()+" ("+livec+")");
         }
         else if(ans.equals("a"))
         {
@@ -432,13 +472,15 @@ timverview.setText(""+(l/1000));
             gradientDrawable.setColor(getResources().getColor(R.color.successProgress));
             optn1.setProgressDrawable(gradientDrawable);
             optn1.setProgress(100);
+            optn1.setText(questions.getO1()+" ("+livea+")");
             gradientDrawable.setColor(getResources().getColor(R.color.errorProgress));
             optn2.setProgressDrawable(gradientDrawable);
             optn2.setProgress(0);
-            optn2.setText(questions.getO1());
+            optn2.setText(questions.getO2()+" ("+liveb+")");
             optn3.setProgressDrawable(gradientDrawable);
             optn3.setProgress(0);
-            optn3.setText(questions.getO3());
+            optn3.setText(questions.getO3()+" ("+livec+")");
+
         }
         else if(ans.equals("c"))
         {
@@ -446,14 +488,18 @@ timverview.setText(""+(l/1000));
             gradientDrawable.setColor(getResources().getColor(R.color.successProgress));
             optn3.setProgressDrawable(gradientDrawable);
             optn3.setProgress(100);
+            optn3.setText(questions.getO3()+" ("+livec+")");
             gradientDrawable.setColor(getResources().getColor(R.color.errorProgress));
             optn2.setProgressDrawable(gradientDrawable);
             optn2.setProgress(0);
-            optn2.setText(questions.getO1());
+            optn2.setText(questions.getO2()+" ("+liveb+")");
             optn1.setProgressDrawable(gradientDrawable);
             optn1.setProgress(0);
-            optn1.setText(questions.getO3());
+            optn1.setText(questions.getO1()+" ("+livea+")");
         }
+        Log.d("checkData","a = "+parsea);
+        Log.d("checkData","b = "+parseb);
+        Log.d("checkData","c = "+parsec);
 //        optn1.setProgress(50);
 //        optn2.setProgress(30);
 //        optn3.setProgress(80);

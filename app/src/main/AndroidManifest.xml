@@ -37,8 +37,10 @@
             android:name=".TestDesignActivity"
             android:label="@string/title_activity_test_design"
             android:theme="@style/AppTheme" />
-        <activity android:name=".FirstActivity" />
-        <activity android:name=".Registration"></activity>
+        <activity
+            android:name=".FirstActivity"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".Registration" />
         <activity android:name=".VerifyCodeActivity" />
         <activity android:name=".UserProfile" />
 
@@ -69,7 +71,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ConfirmLoginActivity"></activity>
+        <activity android:name=".ConfirmLoginActivity" />
+        <activity
+            android:name=".ReferralCodeActivity"
+            android:label="@string/extra_life"
+            android:theme="@style/AppTheme2">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".FirstActivity" />
+        </activity>
+        <activity android:name=".SettingsActivity" >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".FirstActivity" />
+        </activity>
     </application>
 
 </manifest>
