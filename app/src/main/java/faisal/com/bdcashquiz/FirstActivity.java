@@ -75,6 +75,8 @@ private SharedPreferences sharedPreferences;
     }
     String VideoId="";
     double balance;
+
+
     public void realTimeUpdate()
     {
 
@@ -91,9 +93,11 @@ private SharedPreferences sharedPreferences;
                     Intent intent = new Intent(FirstActivity.this, MainLiveActivity.class);
                     intent.putExtra("videoId", VideoId);
                     Log.d("videoId", VideoId);
+
                     startActivity(intent);
-                    processLife();
                     finish();
+                    processLife();
+
                 }
             }
         });
@@ -106,6 +110,7 @@ private SharedPreferences sharedPreferences;
                 amountText.setText("৳ "+document.get("amount"));
             }
         });
+
         db.collection("userManage").document(info.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {

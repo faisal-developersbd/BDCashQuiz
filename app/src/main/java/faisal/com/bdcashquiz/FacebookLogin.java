@@ -54,11 +54,19 @@ public class FacebookLogin extends AppCompatActivity {
 
         final String username = preferences.getString("name", null);
         final String phoneNumber = preferences.getString("phone", null);
-        if (username != null && phoneNumber != null) {
+
+        if ((username != null && phoneNumber != null)) {
             Intent intent = new Intent(FacebookLogin.this, FirstActivity.class);
             startActivity(intent);
             finish();
         }
+        else  if(mAuth.getCurrentUser()!=null)
+        {
+            Intent intent = new Intent(FacebookLogin.this, ConfirmLoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
 
         mCallbackMangager = CallbackManager.Factory.create();
         LoginButton loginButton = findViewById(R.id.fblogin);
@@ -90,7 +98,7 @@ public class FacebookLogin extends AppCompatActivity {
     private void handleFacebookAccessToken(AccessToken token) {
 
         Log.d("checkData", "name:" + Profile.getCurrentProfile().getName());
-        Log.d("checkData", "image:" + Profile.getCurrentProfile().getProfilePictureUri(300,300));
+        //Log.d("checkData", "image:" + Profile.getCurrentProfile().getProfilePictureUri(300,300));
         Log.d("checkData", "link:" + Profile.getCurrentProfile().toString());
 
 
@@ -105,7 +113,7 @@ public class FacebookLogin extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             Log.d("usrname", "Name: " + user.getDisplayName());
                             Log.d("usrname", "Phone: " + user.getPhoneNumber());
-                            Log.d("usrname", "Photo Url: " + Profile.getCurrentProfile().getProfilePictureUri(500,500));
+                          //  Log.d("usrname", "Photo Url: " + Profile.getCurrentProfile().getProfilePictureUri(150,150));
                             Log.d("usrname", "Id: " + user.getUid());
 
                             SharedPreferences.Editor editor = preferences.edit();
@@ -113,7 +121,7 @@ public class FacebookLogin extends AppCompatActivity {
                             editor.putString("phone", user.getPhoneNumber());
                             editor.putString("uid", user.getUid());
                             editor.putString("email", user.getEmail());
-                            editor.putString("url", "" + Profile.getCurrentProfile().getProfilePictureUri(500,500));
+                            editor.putString("url", "" + Profile.getCurrentProfile().getProfilePictureUri(150,150));
                             editor.commit();
                             //getToken();
                             Intent intent = new Intent(FacebookLogin.this, ConfirmLoginActivity.class);

@@ -115,6 +115,7 @@ info=mAuth.getCurrentUser();
                         if (manage != null) {
                             inputReferralCode.setText("" + m_Text);
                             userUpdate(document.getId(), manage);
+                            updateLoggedUserDetails();
                         }
                     } else
                         Toast.makeText(getBaseContext(), "You can not reffer yourself!!", Toast.LENGTH_LONG).show();
@@ -125,6 +126,17 @@ info=mAuth.getCurrentUser();
             }
         });
 
+    }
+    public void updateLoggedUserDetails()
+    {
+        FirebaseFirestore db=FirebaseFirestore.getInstance();
+        db.collection("userManage").document(mAuth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                userManage manage=documentSnapshot.toObject(userManage.class);
+                userUpdate(documentSnapshot.getId(),manage);
+            }
+        });
     }
     public void userUpdate(final String id, final userManage manage)
     {

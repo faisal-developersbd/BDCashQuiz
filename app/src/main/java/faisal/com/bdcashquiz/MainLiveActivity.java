@@ -49,6 +49,7 @@ private VideoView videoView;
 private FloatingActionButton life1;
 private FloatingActionButton life2;
 private TextView watchTextView;
+private boolean messagedisplay;
     FloatingActionButton life3;
     FirebaseAuth mAuth;
     UserInfo info;
@@ -160,24 +161,31 @@ public void displayLife(int life)
                            life2.setVisibility(View.GONE);
                            life3.setVisibility(View.GONE);
                          //  Snackbar.make(,"Sorry You Are No More!!",Snackbar.LENGTH_LONG).setAction(null,null);
-                           Toast.makeText(getBaseContext(),"Sorry You Are No More!!",Toast.LENGTH_LONG).show();
+                           if(messagedisplay==true) {
+                               Toast.makeText(getBaseContext(), getString(R.string.message1), Toast.LENGTH_LONG).show();
+                           }
                            break;
                        case 1:
                            life1.setVisibility(View.VISIBLE);
                            life2.setVisibility(View.GONE);
                            life3.setVisibility(View.GONE);
-                           Toast.makeText(getBaseContext(),"Warning! You are in danger position!!",Toast.LENGTH_LONG).show();
+                           if(messagedisplay==true) {
+                               Toast.makeText(getBaseContext(), getString(R.string.message2), Toast.LENGTH_LONG).show();
+                           }
                            break;
                        case 2:
                            life1.setVisibility(View.VISIBLE);
                            life2.setVisibility(View.VISIBLE);
                            life3.setVisibility(View.GONE);
+                           if(messagedisplay==true) {
+                               Toast.makeText(getBaseContext(), getString(R.string.message3), Toast.LENGTH_LONG).show();
+                           }
                            break;
                        case 3:
                            life1.setVisibility(View.VISIBLE);
                            life2.setVisibility(View.VISIBLE);
                            life3.setVisibility(View.VISIBLE);
-                           Toast.makeText(getBaseContext(),"You have lost one life!!",Toast.LENGTH_LONG).show();
+
                            break;
                            default:break;
                    }
@@ -196,6 +204,7 @@ public void displayLife(int life)
 
 
                 String isLive=""+document.get("live");
+
                 if(isLive.equals("false")) {
                     Intent intent = new Intent(MainLiveActivity.this, FirstActivity.class);
 
@@ -281,6 +290,7 @@ public void displayLife(int life)
                           if(questions.getId()!=null)
                             loadQuestionFragment(questions);
                             appBarLayout.setVisibility(View.VISIBLE);
+                            messagedisplay=true;
                          //   isGameStart=true;
                             //Toast.makeText(getBaseContext(),questions.toString(),Toast.LENGTH_LONG).show();
                             break;

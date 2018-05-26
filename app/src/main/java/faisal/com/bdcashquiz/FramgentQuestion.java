@@ -60,7 +60,7 @@ public class FramgentQuestion extends Fragment {
     private SubmitProcessButton optn1;
     private SubmitProcessButton optn2;
     private SubmitProcessButton optn3;
-    Context context;
+        Context context;
     private String btnClicked=null;
     //private boolean isClikable;
     private int lifeCount=0;
@@ -123,11 +123,11 @@ timverview.setText(""+(l/1000));
             userAns=usAns;
            // else userAns="d";
             ansQuestion.userAns(usAns);
-            AnsTimer timer=new AnsTimer(5000,500);
+            AnsTimer timer=new AnsTimer(13000,1000);
             timverview.setBackground(getResources().getDrawable(R.drawable.btnshape));
             if(lifeCount==0)
-                timverview.setText("ELIMINATED");
-            timverview.setText("TIME UP");
+                timverview.setText(getString(R.string.message1));
+            timverview.setText(R.string.time_up);
             timverview.setTextColor(getResources().getColor(R.color.red_error));
             timverview.setPadding(30,30,30,30);
 
@@ -446,9 +446,9 @@ public void liveAttend()
         if(lifeCount<=0)
         {
 
-            timverview.setText("ELIMINATED");
+            timverview.setText(getString(R.string.message1));
 
-            Toast.makeText(getActivity().getBaseContext(),"You are eliminated!",Toast.LENGTH_LONG).show();
+           // Toast.makeText(getActivity().getBaseContext(),"You are eliminated!",Toast.LENGTH_LONG).show();
         }
         if(ans.equals("b")) {
             GradientDrawable gradientDrawable = optn2.getProgressDrawable();
