@@ -80,6 +80,10 @@ public class FramgentQuestion extends Fragment {
                 liveAttend();
                 ansSubmit();
             }
+            if(l/1000==3)
+            {
+                ansQuestion.userAns(userAns);
+            }
         }
 public void setLifeCount(int life)
 {
@@ -122,7 +126,7 @@ timverview.setText(""+(l/1000));
                 usAns="c";
             userAns=usAns;
            // else userAns="d";
-            ansQuestion.userAns(usAns);
+
             AnsTimer timer=new AnsTimer(13000,1000);
             timverview.setBackground(getResources().getDrawable(R.drawable.btnshape));
             if(lifeCount==0)
@@ -415,10 +419,10 @@ public void liveAttend()
                    no=Integer.parseInt(""+document.get("number"));
                }
            }
-           total=livea+liveb+livec+no;
-           parsea=(livea*100)/total;
-           parseb=(liveb*100)/total;
-           parsec=(livec*100)/total;
+//           total=livea+liveb+livec+no;
+//           parsea=(livea*100)/total;
+//           parseb=(liveb*100)/total;
+//           parsec=(livec*100)/total;
         }
     });
 }

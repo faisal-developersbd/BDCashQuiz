@@ -21,7 +21,9 @@ allprojects {
         jcenter()
         maven {
             url "https://maven.google.com" // Google's Maven repository
+
         }
+        maven { url "https://tokbox.bintray.com/maven" }
     }
 }
 

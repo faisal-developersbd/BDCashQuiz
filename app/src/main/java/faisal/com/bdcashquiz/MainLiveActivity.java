@@ -1,5 +1,6 @@
 package faisal.com.bdcashquiz;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -7,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.content.res.AppCompatResources;
@@ -14,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,7 +25,6 @@ import android.widget.VideoView;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.CollectionReference;
@@ -32,6 +34,12 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.opentok.android.OpentokError;
+import com.opentok.android.Publisher;
+import com.opentok.android.PublisherKit;
+import com.opentok.android.Session;
+import com.opentok.android.Stream;
+import com.opentok.android.Subscriber;
 
 import java.util.HashMap;
 import java.util.List;
@@ -40,8 +48,10 @@ import javax.annotation.Nullable;
 
 import faisal.com.bdcashquiz.model.Questions;
 import faisal.com.bdcashquiz.model.userManage;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
-public class MainLiveActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
+public class MainLiveActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener,Session.SessionListener,PublisherKit.PublisherListener {
 private LinearLayout linearLayout;
 private WebView webview;
 private android.app.FragmentManager manager;
@@ -53,17 +63,44 @@ private boolean messagedisplay;
     FloatingActionButton life3;
     FirebaseAuth mAuth;
     UserInfo info;
-    private YouTubePlayerView mYouTubePlayerView;
+   // private YouTubePlayerView mYouTubePlayerView;
 private ProgressDialog mDialog;
-    public static final String APP_KEY="AIzaSyBgbP5yQ9KdRnl8GM9fqWxl-EQSNWkAFDg";
+    //public static final String APP_KEY="AIzaSyBgbP5yQ9KdRnl8GM9fqWxl-EQSNWkAFDg";
     public static  String VIDEL_ID="";
     private AppBarLayout appBarLayout;
+
+    //TokBox........
+
+    private  static  String API_KEY="46125722";
+    private static String SESSION_ID="1_MX40NjEyNTcyMn5-MTUyNzMyNzcyNjk5OX5PNjdCUXhVVEw1MTZINmN0eWNzbWQxbW5-fg";
+    private static String TOKEN="T1==cGFydG5lcl9pZD00NjEyNTcyMiZzZGtfdmVyc2lvbj1kZWJ1Z2dlciZzaWc9ODJjZTIwMjA4YTI4MDk5NzhjNGNiNDA4ZTY1MmVkZGUzMTIwODUxMzpzZXNzaW9uX2lkPTFfTVg0ME5qRXlOVGN5TW41LU1UVXlOek15TnpjeU5qazVPWDVQTmpkQ1VYaFZWRXcxTVRaSU5tTjBlV056YldReGJXNS1mZyZjcmVhdGVfdGltZT0xNTI3MzI3NzI3JnJvbGU9cHVibGlzaGVyJm5vbmNlPTE1MjczMjc3MjcuMDIyNDUzODEyNzk1MyZleHBpcmVfdGltZT0xNTI5OTE5NzI3" ;
+    private static String LOG_TAG=MainActivity.class.getSimpleName();
+    private static final int PC_SETTINGS=123;
+    private static final int RC_SETTINGS_SCREEN_PERM = 123;
+    private static final int RC_VIDEO_APP_PERM = 124;
+
+
+    private Session mSession;
+    private LinearLayout pub_container,sub_container;
+
+    private LinearLayout mPublisherViewContainer;
+    private LinearLayout mSubscriberViewContainer;
+    private Publisher mPublisher;
+    private Subscriber mSubscriber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_live);
-        VIDEL_ID=getIntent().getStringExtra("videoId");
-        Log.d("videoId","In Main: "+VIDEL_ID);
+      //  VIDEL_ID=getIntent().getStringExtra("videoId");
+      //  Log.d("videoId","In Main: "+VIDEL_ID);
+
+        //TopBoX Live................
+        requestPermissions();
+
+        mPublisherViewContainer = findViewById(R.id.publisher_container);
+        mSubscriberViewContainer = findViewById(R.id.subscriber_container);
+
+
          mAuth=FirebaseAuth.getInstance();
          info=mAuth.getCurrentUser();
          life1=findViewById(R.id.life1);
@@ -89,8 +126,8 @@ private ProgressDialog mDialog;
        // manager.beginTransaction().replace(R.id.displayQuestionLayout,framgentQuestion).commit();
         liveUpdate();
         attendUser();
-        mYouTubePlayerView=(YouTubePlayerView) findViewById(R.id.youTubePlayerView);
-        mYouTubePlayerView.initialize(APP_KEY,this);
+      //  mYouTubePlayerView=(YouTubePlayerView) findViewById(R.id.youTubePlayerView);
+      //  mYouTubePlayerView.initialize(APP_KEY,this);
         Drawable drawable = AppCompatResources.getDrawable(getBaseContext(),R.drawable.ic_chatbackground);
         AppBarLayout layout=findViewById(R.id.chatbarlayout);
        // layout.setBackground(drawable);
@@ -269,10 +306,10 @@ public void displayLife(int life)
     public void liveUpdate()
     {
        // manager.beginTransaction().remove(framgentQuestion).commit();
-        if(mYouTubePlayerView==null)
-        mYouTubePlayerView=findViewById(R.id.youTubePlayerView);
+     //   if(mYouTubePlayerView==null)
+     //   mYouTubePlayerView=findViewById(R.id.youTubePlayerView);
         FirebaseFirestore db=FirebaseFirestore.getInstance();
-      params = mYouTubePlayerView.getLayoutParams();
+    //  params = mYouTubePlayerView.getLayoutParams();
         final CollectionReference docRef = db.collection("livequestion");
         manager.beginTransaction().remove(framgentQuestion).commit();
         docRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -304,8 +341,8 @@ manager.beginTransaction().remove(framgentQuestion).commit();
 {
 
 }
-                            params.height= ViewGroup.LayoutParams.MATCH_PARENT;
-                            params.width=ViewGroup.LayoutParams.MATCH_PARENT;
+//                            params.height= ViewGroup.LayoutParams.MATCH_PARENT;
+                           // params.width=ViewGroup.LayoutParams.MATCH_PARENT;
                             appBarLayout.setVisibility(View.GONE);
                          //   isGameStart=false;
                             break;
@@ -340,10 +377,10 @@ manager.beginTransaction().remove(framgentQuestion).commit();
                 }
             });
             if (VIDEL_ID != null && !wasRestored) {
-                youTubePlayer.loadVideo(VIDEL_ID);
-                enableDisableView(mYouTubePlayerView,false);
-                mYouTubePlayerView.setClickable(false);
-                mYouTubePlayerView.setFocusable(false);
+              //  youTubePlayer.loadVideo(VIDEL_ID);
+               // enableDisableView(mYouTubePlayerView,false);
+              //  mYouTubePlayerView.setClickable(false);
+              //  mYouTubePlayerView.setFocusable(false);
             }
 
         }
@@ -460,4 +497,90 @@ manager.beginTransaction().remove(framgentQuestion).commit();
     public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
 
     }
+
+
+
+    //TokBox.Live.......
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode,permissions,grantResults);
+    }
+
+    @AfterPermissionGranted(RC_VIDEO_APP_PERM)
+    private void requestPermissions() {
+        String[] perms = { Manifest.permission.INTERNET, Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO };
+        if (EasyPermissions.hasPermissions(this, perms)) {
+            // initialize view objects from your layout
+            mPublisherViewContainer =  findViewById(R.id.publisher_container);
+            mSubscriberViewContainer =  findViewById(R.id.subscriber_container);
+
+            mSession = new Session.Builder(this, API_KEY, SESSION_ID).build();
+            mSession.setSessionListener(this);
+            mSession.connect(TOKEN);
+
+
+        } else {
+            EasyPermissions.requestPermissions(this, "This app needs access to your camera and mic to make video calls", RC_VIDEO_APP_PERM, perms);
+        }
+    }
+
+    @Override
+    public void onConnected(Session session) {
+        Log.i(LOG_TAG, "Session Connected");
+        mPublisher = new Publisher.Builder(this).build();
+        mPublisher.setPublisherListener(this);
+
+        mPublisherViewContainer.addView(mPublisher.getView());
+        //mSession.publish(mPublisher);
+    }
+
+    @Override
+    public void onDisconnected(Session session) {
+        Log.i(LOG_TAG, "Session Disconnected");
+    }
+
+    @Override
+    public void onStreamReceived(Session session, Stream stream) {
+        Log.i(LOG_TAG, "Stream Received");
+        if (mSubscriber == null) {
+            mSubscriber = new Subscriber.Builder(this, stream).build();
+            mSession.subscribe(mSubscriber);
+            mSubscriberViewContainer.addView(mSubscriber.getView());
+        }
+    }
+
+    @Override
+    public void onStreamDropped(Session session, Stream stream) {
+        Log.i(LOG_TAG, "Stream Dropped");
+        if (mSubscriber != null) {
+            mSubscriber = null;
+            mSubscriberViewContainer.removeAllViews();
+        }
+    }
+
+    @Override
+    public void onError(Session session, OpentokError opentokError) {
+
+
+    }
+
+    @Override
+    public void onStreamCreated(PublisherKit publisherKit, Stream stream) {
+
+    }
+
+    @Override
+    public void onStreamDestroyed(PublisherKit publisherKit, Stream stream) {
+
+    }
+
+    @Override
+    public void onError(PublisherKit publisherKit, OpentokError opentokError) {
+
+    }
+
 }

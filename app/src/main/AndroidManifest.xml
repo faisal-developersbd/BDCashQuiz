@@ -80,7 +80,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".FirstActivity" />
         </activity>
+        <activity android:name=".LeaderBoardActivity"/>
         <activity android:name=".SettingsActivity" >
+
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
