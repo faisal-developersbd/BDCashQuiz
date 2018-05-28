@@ -16,9 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -85,7 +83,7 @@ private ProgressDialog mDialog;
     private LinearLayout pub_container,sub_container;
 
     private LinearLayout mPublisherViewContainer;
-    private RelativeLayout mSubscriberViewContainer;
+    private LinearLayout mSubscriberViewContainer;
     private Publisher mPublisher;
     private Subscriber mSubscriber;
     @Override
