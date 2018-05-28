@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -73,7 +74,7 @@ private ProgressDialog mDialog;
 
     private  static  String API_KEY="46125722";
     private static String SESSION_ID="1_MX40NjEyNTcyMn5-MTUyNzMyNzcyNjk5OX5PNjdCUXhVVEw1MTZINmN0eWNzbWQxbW5-fg";
-    private static String TOKEN="T1==cGFydG5lcl9pZD00NjEyNTcyMiZzZGtfdmVyc2lvbj1kZWJ1Z2dlciZzaWc9ODJjZTIwMjA4YTI4MDk5NzhjNGNiNDA4ZTY1MmVkZGUzMTIwODUxMzpzZXNzaW9uX2lkPTFfTVg0ME5qRXlOVGN5TW41LU1UVXlOek15TnpjeU5qazVPWDVQTmpkQ1VYaFZWRXcxTVRaSU5tTjBlV056YldReGJXNS1mZyZjcmVhdGVfdGltZT0xNTI3MzI3NzI3JnJvbGU9cHVibGlzaGVyJm5vbmNlPTE1MjczMjc3MjcuMDIyNDUzODEyNzk1MyZleHBpcmVfdGltZT0xNTI5OTE5NzI3" ;
+    private static String TOKEN="T1==cGFydG5lcl9pZD00NjEyNTcyMiZzaWc9MWU1YmIyYzIzYzZkZDA1MzM3NzYyNjBkMjMwYzBmOTI3Mzc3NzIzMDpzZXNzaW9uX2lkPTFfTVg0ME5qRXlOVGN5TW41LU1UVXlOek15TnpjeU5qazVPWDVQTmpkQ1VYaFZWRXcxTVRaSU5tTjBlV056YldReGJXNS1mZyZjcmVhdGVfdGltZT0xNTI3NDkwODE3Jm5vbmNlPTAuNzIyMjM0NzU4NDc4NzY3JnJvbGU9c3Vic2NyaWJlciZleHBpcmVfdGltZT0xNTI4MDk1NjE3JmNvbm5lY3Rpb25fZGF0YT1TdWJzY3JpYmVyJmluaXRpYWxfbGF5b3V0X2NsYXNzX2xpc3Q9" ;
     private static String LOG_TAG=MainActivity.class.getSimpleName();
     private static final int PC_SETTINGS=123;
     private static final int RC_SETTINGS_SCREEN_PERM = 123;
@@ -84,7 +85,7 @@ private ProgressDialog mDialog;
     private LinearLayout pub_container,sub_container;
 
     private LinearLayout mPublisherViewContainer;
-    private LinearLayout mSubscriberViewContainer;
+    private RelativeLayout mSubscriberViewContainer;
     private Publisher mPublisher;
     private Subscriber mSubscriber;
     @Override
@@ -558,7 +559,7 @@ manager.beginTransaction().remove(framgentQuestion).commit();
         Log.i(LOG_TAG, "Stream Dropped");
         if (mSubscriber != null) {
             mSubscriber = null;
-            mSubscriberViewContainer.removeAllViews();
+           // mSubscriberViewContainer.removeAllViews();
         }
     }
 
