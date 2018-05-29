@@ -150,29 +150,42 @@ public class LeaderBoardActivity extends AppCompatActivity {
 
                 for (DocumentSnapshot dc : docList) {
                    // Log.d("userCheck", dc.getId() + ">>>" + dc.getData().get("Balance"));
+        try {
+
 
                     addlist.add(String.valueOf(dc.getData().get("name")));
+
                     addlist2.add(String.valueOf(dc.getData().get("balance")));
-                    addlist3.add(String.valueOf(dc.getData().get("photoUrl")));
+                    addlist3.add(String.valueOf(dc.getData().get("photoUrl")));}
+
+                    catch (Exception e){
+
+                        Log.d("datGet",e.toString());
+                    }
 
                 }
 
 
                 int length = addlist2.size();
-                int temp = 0;
+                double temp = 0;
                 String temp2 = "";
                 String temp3 = "";
                 for (int i = 0; i < length; i++) {
                     for (int j = 1; j < length - i; j++) {
 
 
-                        int var1 = Integer.valueOf(addlist2.get(j - 1));
+                        double var1 = Double.valueOf(addlist2.get(j - 1));
+
+                        String lsr=String.valueOf(var1);
+
                         String name1 = addlist.get(j - 1);
                         String img1 = addlist3.get(j - 1);
 
-                        int var2 = Integer.valueOf(addlist2.get(j));
+                        double var2 = Double.valueOf(addlist2.get(j));
                         String name2 = addlist.get(j);
                         String img2 = addlist3.get(j);
+
+
                         if (var1 < var2) {
                             temp = var1;
                             temp2 = name1;
@@ -193,12 +206,14 @@ public class LeaderBoardActivity extends AppCompatActivity {
                 }
 
                 for (int i = 0; i < addlist2.size(); i++) {
+                   // String balance=addlist2.get(i);
+
 
                     String name=addlist.get(i);
                     String balance=addlist2.get(i);
                     String img=addlist3.get(i);
 
-
+                    /*Log.d("datGet",String.valueOf(name)+">>>"+balance+">>>"+img);*/
                     Item item=new Item(balance,name,img);
                     arrayList.add(item);
 
