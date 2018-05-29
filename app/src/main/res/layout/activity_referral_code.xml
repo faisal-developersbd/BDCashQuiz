@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="80sp"
                 android:textColor="@color/backgroundLayout"
-                android:text="YOUR REFERRAL CODE"
+                android:text="@string/usr_reffaral_code_text"
                 android:textAlignment="center"
                 android:layout_alignBottom="@+id/relativeLayout2" />
 
@@ -100,7 +100,7 @@
                     android:gravity="center_vertical"
                     android:minHeight="60sp"
 
-                    android:text="Ref code" />
+                    android:text="@string/referral_code" />
 
                 <Button
                     android:id="@+id/shareButton"
@@ -113,7 +113,7 @@
                     android:layout_marginTop="2sp"
                     android:layout_alignTop="@+id/codeText"
                     android:gravity="center"
-                    android:text="SHARE"
+                    android:text="@string/shareText"
                     android:layout_marginRight="5sp"
                     android:layout_marginBottom="2sp"
                     android:textColor="@android:color/white" />

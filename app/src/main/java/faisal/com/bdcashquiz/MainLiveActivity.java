@@ -102,6 +102,8 @@ private ProgressDialog mDialog;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_live);
+        db=FirebaseFirestore.getInstance();
+        disableOfflineData();
       //  VIDEL_ID=getIntent().getStringExtra("videoId");
       //  Log.d("videoId","In Main: "+VIDEL_ID);
 
@@ -117,8 +119,7 @@ private ProgressDialog mDialog;
          life1=findViewById(R.id.life1);
          life2=findViewById(R.id.life2);
          life3=findViewById(R.id.life3);
-         db=FirebaseFirestore.getInstance();
-        disableOfflineData();
+
         realTimeMonitorUpdate();
         liveAttendUser();
         //webview use to call own site
@@ -151,12 +152,16 @@ watchTextView=findViewById(R.id.watchText);
       //  manager.beginTransaction().remove(framgentQuestion).commit();
        // playVideo();
     }
-    public  void disableOfflineData()
-    {
+    public  void disableOfflineData() {
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(false)
                 .build();
-        db.setFirestoreSettings(settings);
+        try {
+            db.setFirestoreSettings(settings);
+        } catch (Exception e)
+        {
+
+        }
     }
 
     @Override
@@ -491,47 +496,6 @@ manager.beginTransaction().remove(framgentQuestion).commit();
         }
     };
 
-    public static void enableDisableView(View view, boolean enabled) {
-        view.setEnabled(enabled);
-        if (view instanceof ViewGroup) {
-            ViewGroup group = (ViewGroup) view;
-            for (int idx = 0; idx < group.getChildCount(); idx++) {
-                enableDisableView(group.getChildAt(idx), enabled);
-            }
-        }
-    }
-
-    public YouTubePlayer.PlayerStateChangeListener playerStateChangeListener=new YouTubePlayer.PlayerStateChangeListener() {
-        @Override
-        public void onLoading() {
-
-        }
-
-        @Override
-        public void onLoaded(String s) {
-
-        }
-
-        @Override
-        public void onAdStarted() {
-
-        }
-
-        @Override
-        public void onVideoStarted() {
-
-        }
-
-        @Override
-        public void onVideoEnded() {
-
-        }
-
-        @Override
-        public void onError(YouTubePlayer.ErrorReason errorReason) {
-
-        }
-    };
 
 //    @Override
 //    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {

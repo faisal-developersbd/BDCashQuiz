@@ -19,7 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dd.processbutton.iml.SubmitProcessButton;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -82,6 +81,7 @@ public class FramgentQuestion extends Fragment {
             }
             if(l/1000==3)
             {
+                if(lifeCount>0)
                 ansQuestion.userAns(userAns);
             }
         }
@@ -359,19 +359,23 @@ timverview.setText(""+(l/1000));
     }
     public void setAllError()
     {
-                            GradientDrawable gradientDrawable=optn1.getProgressDrawable();
-                    gradientDrawable.setColor(getResources().getColor(R.color.errorProgress));
-                    optn1.setProgressDrawable(gradientDrawable);
-        GradientDrawable gradientDrawable2=optn2.getProgressDrawable();
-        gradientDrawable.setColor(getResources().getColor(R.color.errorProgress));
-        optn2.setProgressDrawable(gradientDrawable2);
-        GradientDrawable gradientDrawable3=optn3.getProgressDrawable();
-        gradientDrawable.setColor(getResources().getColor(R.color.errorProgress));
-        optn3.setProgressDrawable(gradientDrawable3);
-        optn1.setProgress(40);
-        optn2.setProgress(70);
-        optn3.setProgress(80);
+        try {
+            GradientDrawable gradientDrawable = optn1.getProgressDrawable();
+            gradientDrawable.setColor(getResources().getColor(R.color.errorProgress));
+            optn1.setProgressDrawable(gradientDrawable);
+            GradientDrawable gradientDrawable2 = optn2.getProgressDrawable();
+            gradientDrawable.setColor(getResources().getColor(R.color.errorProgress));
+            optn2.setProgressDrawable(gradientDrawable2);
+            GradientDrawable gradientDrawable3 = optn3.getProgressDrawable();
+            gradientDrawable.setColor(getResources().getColor(R.color.errorProgress));
+            optn3.setProgressDrawable(gradientDrawable3);
+            optn1.setProgress(40);
+            optn2.setProgress(70);
+            optn3.setProgress(80);
+        }catch(Exception e)
+        {
 
+        }
     }
     public void disableClickonCondition()
     {
@@ -385,7 +389,7 @@ timverview.setText(""+(l/1000));
       //  Toast.makeText(getActivity().getBaseContext(),"Life Count Outside condition: "+lifeCount,Toast.LENGTH_LONG).show();
         if(lifeCount<=0)
             {
-                Toast.makeText(getActivity().getBaseContext(),"Life Count: "+lifeCount,Toast.LENGTH_LONG).show();
+               // Toast.makeText(getActivity().getBaseContext(),"Life Count: "+lifeCount,Toast.LENGTH_LONG).show();
                 optn1.setClickable(false);
                 optn2.setClickable(false);
                 optn3.setClickable(false);
@@ -449,9 +453,13 @@ public void liveAttend()
         }
         if(lifeCount<=0)
         {
+try {
+    timverview.setText(getString(R.string.message1));
+}catch (Exception e)
+{
 
-            timverview.setText(getString(R.string.message1));
-
+    
+}
            // Toast.makeText(getActivity().getBaseContext(),"You are eliminated!",Toast.LENGTH_LONG).show();
         }
         if(ans.equals("b")) {

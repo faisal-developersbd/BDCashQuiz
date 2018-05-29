@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 
 import faisal.com.bdcashquiz.model.userManage;
+import pub.devrel.easypermissions.EasyPermissions;
 
 public class ConfirmLoginActivity extends AppCompatActivity {
     private TextView uname;
@@ -31,15 +33,19 @@ public class ConfirmLoginActivity extends AppCompatActivity {
     private ImageView img;
     private UserInfo info;
     private FirebaseAuth mAuth;
+FirebaseFirestore db;
    // private EditText usernameText;
 
 
 private SharedPreferences sharedPreferences;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_login);
-
+db=FirebaseFirestore.getInstance();
+        new DisableOfflineData().disableOfflineData(db);
         mAuth=FirebaseAuth.getInstance();
         info=mAuth.getCurrentUser();
         //usernameText=findViewById(R.id.username);
@@ -119,7 +125,7 @@ private SharedPreferences sharedPreferences;
     userManage manage;
     public void getExistence() throws Exception
     {
-        FirebaseFirestore db=FirebaseFirestore.getInstance();
+     //   FirebaseFirestore db=FirebaseFirestore.getInstance();
         db.collection("userManage").document(info.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -183,7 +189,7 @@ private SharedPreferences sharedPreferences;
                             editor.putString("phone",phoneNumber);
                             editor.commit();
                             hmap.put("photoUrl",photoUrl);
-                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                           // FirebaseFirestore db = FirebaseFirestore.getInstance();
                             db.collection("userManage").document(uid).set(hmap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
@@ -200,5 +206,10 @@ private SharedPreferences sharedPreferences;
                 });
             }
         });
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode,permissions,grantResults);
     }
 }
