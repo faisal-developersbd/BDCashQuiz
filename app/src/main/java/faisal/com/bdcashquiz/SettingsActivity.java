@@ -11,9 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,6 +23,7 @@ import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,10 +38,17 @@ private TextView inputReferralCode;
 private TextView referralCode;
 private FirebaseAuth mAuth;
 private UserInfo info;
+private userManage userData;
+private TextView userName;
+private ImageView userPic;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        Gson gson=new Gson();
+        userData=gson.fromJson(getIntent().getStringExtra("data"),userManage.class);
+        userName=findViewById(R.id.txtName);
+        userPic=findViewById(R.id.userPic);
 mAuth=FirebaseAuth.getInstance();
 info=mAuth.getCurrentUser();
       //  AppBarLayout appBarLayout=findViewById(R.id.appbar);
@@ -55,6 +65,8 @@ info=mAuth.getCurrentUser();
                 alaertDialog();
             }
         });
+        Glide.with(getBaseContext()).load(userData.getPhotoUrl()).override(150,150).fitCenter().into(userPic);
+        userName.setText(userData.getName());
     }
     void alaertDialog()
     {

@@ -29,6 +29,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +47,7 @@ private TextView amountText;
 private FirebaseAuth mAuth;
 private UserInfo info;
 private TextView lifeText;
+private userManage userData;
     ListenerRegistration userManageRegistration;
     ListenerRegistration scheduleRegistration;
     ListenerRegistration liveMonitorRegistration;
@@ -155,6 +157,7 @@ private FlatButton medacrom;
      db.collection("userManage").document(info.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
+               userData=documentSnapshot.toObject(userManage.class);
                 balance=Double.parseDouble(""+documentSnapshot.get("balance"));
 
                 balanceText.setText("৳ "+translateNumber(""+balance));
@@ -184,7 +187,12 @@ private FlatButton medacrom;
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(false)
                 .build();
-        db.setFirestoreSettings(settings);
+        try {
+            db.setFirestoreSettings(settings);
+        }catch(Exception e)
+        {
+
+        }
     }
     public void processLife()
     {
@@ -252,8 +260,15 @@ private FlatButton medacrom;
     }
 
     public void goSettings(View view) {
-        Intent intent=new Intent(FirstActivity.this,new SettingsActivity().getClass());
-        startActivity(intent);
+        Gson gson=new Gson();
+        if(userData!=null)
+        {
+            String data=gson.toJson(userData);
+            Intent intent=new Intent(FirstActivity.this,new SettingsActivity().getClass());
+            intent.putExtra("data",data);
+            startActivity(intent);
+        }
+
     }
 
 
