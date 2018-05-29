@@ -1,5 +1,6 @@
 package faisal.com.bdcashquiz;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
@@ -25,7 +27,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -38,6 +39,8 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import faisal.com.bdcashquiz.model.userManage;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
 public class FirstActivity extends AppCompatActivity {
 private ImageView imgview;
@@ -48,6 +51,7 @@ private FirebaseAuth mAuth;
 private UserInfo info;
 private TextView lifeText;
 private userManage userData;
+    private static final int RC_VIDEO_APP_PERM = 124;
     ListenerRegistration userManageRegistration;
     ListenerRegistration scheduleRegistration;
     ListenerRegistration liveMonitorRegistration;
@@ -58,7 +62,7 @@ private FlatButton medacrom;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         db=FirebaseFirestore.getInstance();
-        disableOfflineData();
+        new DisableOfflineData().disableOfflineData(db);
         setContentView(R.layout.activity_first);
         balanceText=findViewById(R.id.balanceText);
         nameText=findViewById(R.id.textView7);
@@ -95,7 +99,7 @@ private FlatButton medacrom;
         });
 
         realTimeUpdate();
-
+        requestPermissions();
     }
     String VideoId="";
     double balance;
@@ -129,15 +133,20 @@ private FlatButton medacrom;
 
                 String isLive=""+document.get("live");
                 if(isLive.equals("true")) {
-                    Intent intent = new Intent(FirstActivity.this, MainLiveActivity.class);
-                    intent.putExtra("videoId", VideoId);
-                    Log.d("videoId", VideoId);
 
-                    startActivity(intent);
 
+                    String watch=""+document.get("watch");
+                    Log.d("watch",watch);
+                    if(!watch.equals("false"))
                     processLife();
+                    else
+                    {
+                        Toast.makeText(getBaseContext(),getString(R.string.message1),Toast.LENGTH_LONG).show();
+                        watchGame();
+
+                    }
                     datachAllListener();
-                    finish();
+
 
 
                 }
@@ -178,21 +187,65 @@ private FlatButton medacrom;
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 userManage manage=documentSnapshot.toObject(userManage.class);
-               lifeText.setText(""+manage.getTotalLife());
+                String lifet=manage.getTotalLife();
+                String output=lifet.replaceAll("0","০").replaceAll("1","১").replaceAll("2","২").replaceAll("3","৩").replaceAll("4","৪").replaceAll("5","৫").replaceAll("6","৬").replaceAll("7","৭").replaceAll("8","৮").replaceAll("9","৯");
+               lifeText.setText(""+output);
             }
         });
     }
-    public  void disableOfflineData()
-    {
-        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                .setPersistenceEnabled(false)
-                .build();
-        try {
-            db.setFirestoreSettings(settings);
-        }catch(Exception e)
-        {
 
-        }
+    public void watchGame()
+    {
+        // FirebaseFirestore db=FirebaseFirestore.getInstance();
+        db.collection("schedule").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                List<DocumentSnapshot> documents=queryDocumentSnapshots.getDocuments();
+                DocumentSnapshot documentSnapshot=documents.get(0);
+                maxLife=Integer.parseInt(""+documentSnapshot.get("max_life"));
+                FirebaseFirestore db=FirebaseFirestore.getInstance();
+                db.collection("userManage").document(info.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        userManage manage=documentSnapshot.toObject(userManage.class);
+                        Log.d("data",manage.toString());
+                        int life=Integer.parseInt(manage.getTotalLife());
+
+
+                        Map<String,String> hmap=new HashMap<>();
+
+                        hmap.put("name",info.getDisplayName());
+                        hmap.put("phoneNumber",sharedPreferences.getString("phone",null));
+                        hmap.put("email",info.getEmail());
+                        hmap.put("photoUrl",""+info.getPhotoUrl());
+
+                        hmap.put("totalLife",""+life);
+                        hmap.put("gameLife",""+0);
+                        hmap.put("balance",manage.getBalance());
+                        FirebaseFirestore  db=FirebaseFirestore.getInstance();
+                        db.collection("userManage").document(info.getUid()).set(hmap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d("datacheck","Update life ");
+                                Intent intent = new Intent(FirstActivity.this, MainLiveActivity.class);
+                                intent.putExtra("videoId", VideoId);
+                                Log.d("videoId", VideoId);
+
+                                startActivity(intent);
+                                finish();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("datacheck","error: "+e);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
+
     }
     public void processLife()
     {
@@ -231,6 +284,12 @@ private FlatButton medacrom;
                              @Override
                              public void onSuccess(Void aVoid) {
                                  Log.d("datacheck","Update life ");
+                                 Intent intent = new Intent(FirstActivity.this, MainLiveActivity.class);
+                                 intent.putExtra("videoId", VideoId);
+                                 Log.d("videoId", VideoId);
+
+                                 startActivity(intent);
+                                 finish();
                              }
                          }).addOnFailureListener(new OnFailureListener() {
                              @Override
@@ -271,5 +330,16 @@ private FlatButton medacrom;
 
     }
 
+    @AfterPermissionGranted(RC_VIDEO_APP_PERM)
+    private void requestPermissions() {
+        String[] perms = { android.Manifest.permission.INTERNET, android.Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO };
+        if (EasyPermissions.hasPermissions(this, perms)) {
+            // initialize view objects from your layout
 
+
+
+        } else {
+            EasyPermissions.requestPermissions(this, "This app needs access to your camera and mic for livestreaming", RC_VIDEO_APP_PERM, perms);
+        }
+    }
 }

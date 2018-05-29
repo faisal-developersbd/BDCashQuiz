@@ -28,9 +28,8 @@
     <string name="weekly_rank">সাপ্তাহিক মেধাক্রম</string>
     <string name="next_game"><b>পরবর্তী কুইজ</b></string>
     <string name="balance">মোট আয়</string>
-    <string name="extra_life">Extra Life</string>
-    <string name="referral_text">Wrong answer? Keep playing with an Extra life. Get one every time a new MEDHA user signs
-    up with your referral code and plays their first game. They can be used once per game, except on the last question.
+    <string name="extra_life">সুযোগ আছে</string>
+    <string name="referral_text">ভুল উত্তর? খেলতে থাকুন আর সাথে রাখুন একটি নতুন সুযোগ।
     </string>
     <string name="referral_code">রেফারেল কোড</string>
 
@@ -46,5 +45,9 @@
  <string name="email">
  ই-মেইল</string>
     <string name="get_more">আরও সুযোগ</string>
-
+<string name="usr_reffaral_code_text">আপনার রেফারেল কোড </string>
+    <string name="shareText">শেয়ার</string>
+    <string name="share_message1">হ্যালো, আমি মেধা কুইয এ নিয়মিত অংশগ্রহণ করি আপনিও অংসগ্রহণ করতে পারেন। আমার কোড  </string>
+    <string name="share_message2"> ব্যবহার করুন। ডাউনলোড করতে এই লিংকটি অনুসরণ করুন।
+    </string>
 </resources>

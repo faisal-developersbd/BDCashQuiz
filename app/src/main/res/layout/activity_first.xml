@@ -208,7 +208,7 @@ android:layout_marginBottom="10sp"
                         android:layout_height="wrap_content"
                         android:textAlignment="center"
                         android:layout_weight="1"
-                        android:text="EXTRA LIVES" />
+                        android:text="@string/extra_life" />
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_weight="1"
@@ -243,10 +243,11 @@ android:layout_marginBottom="10sp"
                    <Button
                        android:layout_width="match_parent"
 android:layout_weight="1"
-                       android:text="GET MORE"
+                       android:text="@string/get_more"
 android:layout_marginRight="10sp"
 android:padding="2sp"
                        android:onClick="nextActivity"
+            android:textColor="@color/textcolor"
                        android:background="@drawable/btnshaperect"
                        android:layout_height="30sp" />
                 </LinearLayout>

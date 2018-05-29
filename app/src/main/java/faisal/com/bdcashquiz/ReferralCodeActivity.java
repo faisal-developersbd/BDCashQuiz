@@ -36,8 +36,8 @@ FirebaseFirestore db;
         String code=referrelCode.getText().toString();
         Intent intent=new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        String sharebody="Hey, I’m playing a game called MEDHA. You should play too. Use my code '"+code+"' to download follow https://play.google.com/store/apps/details?id=faisal.com.bdcashquiz";
-        String shareSub="medha app";
+        String sharebody=getString(R.string.share_message1)+" "+code+" "+getString(R.string.share_message2)+" "+"' https://play.google.com/store/apps/details?id=faisal.com.bdcashquiz";
+        String shareSub=getString(R.string.app_name);
 
         intent.putExtra(Intent.EXTRA_SUBJECT,shareSub);
         intent.putExtra(Intent.EXTRA_TEXT,sharebody);
