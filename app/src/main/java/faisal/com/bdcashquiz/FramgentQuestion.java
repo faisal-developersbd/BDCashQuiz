@@ -458,7 +458,7 @@ try {
 }catch (Exception e)
 {
 
-    
+
 }
            // Toast.makeText(getActivity().getBaseContext(),"You are eliminated!",Toast.LENGTH_LONG).show();
         }

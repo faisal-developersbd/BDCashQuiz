@@ -6,24 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-<<<<<<< HEAD
-<!--
-    <TextView
-        android:id="@+id/nameId"
-=======
 
-    <android.support.v7.widget.CardView
->>>>>>> 3b094112f51d03f6805472fa0b467f4d82ffe05b
-        android:layout_width="match_parent"
-        android:layout_height="199dp"
-        app:cardElevation="45sp">
-
-<<<<<<< HEAD
-    <TextView
-        android:id="@+id/balanceId"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Balance" />-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -63,49 +46,10 @@
                 android:text="Balance"
                 android:textColor="@android:color/holo_red_dark"
                 android:textSize="20sp" />
-=======
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
 
-            android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/imgview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="3"
-                app:srcCompat="@drawable/com_facebook_button_icon_blue" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:paddingLeft="15sp">
 
-                <TextView
-                    android:id="@+id/nameId"
-                    android:layout_width="match_parent"
-                    android:layout_height="95sp"
-                    android:layout_weight="1"
-                    android:text="Name"
-                    android:textColor="@android:color/black"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/balanceId"
-                    android:layout_width="match_parent"
-                    android:layout_height="95sp"
-                    android:layout_weight="1"
-                    android:text="Balance"
-                    android:textColor="@android:color/black"
-                    android:textSize="20sp" />
-            </LinearLayout>
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
->>>>>>> 3b094112f51d03f6805472fa0b467f4d82ffe05b
 
         </LinearLayout>
     </LinearLayout>
