@@ -32,8 +32,19 @@
     <string name="referral_text">Wrong answer? Keep playing with an Extra life. Get one every time a new MEDHA user signs
     up with your referral code and plays their first game. They can be used once per game, except on the last question.
     </string>
+    <string name="referral_code">রেফারেল কোড</string>
+
     <string name="message3">আপনি আরও দুবার সুযোগ পাচ্ছেন</string>
     <string name="message2">আর মাত্র একবার কিন্তু!</string>
     <string name="message1">আজকের জন্য এখানেই শেষ!</string>
     <string name="time_up">সময় শেষ</string>
+    <string name="user_referral_code">
+রেফারেল কোড ব্যবহার করুন</string>
+ <string name="name"> নাম</string>
+ <string name="mobile">  মোবাইল নম্বর</string>
+    <string name="continuebtn">কনফার্ম</string>
+ <string name="email">
+ ই-মেইল</string>
+    <string name="get_more">আরও সুযোগ</string>
+
 </resources>

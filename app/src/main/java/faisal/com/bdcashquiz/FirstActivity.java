@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
@@ -26,6 +25,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
@@ -44,12 +46,17 @@ private TextView amountText;
 private FirebaseAuth mAuth;
 private UserInfo info;
 private TextView lifeText;
-private SharedPreferences sharedPreferences;
+    ListenerRegistration userManageRegistration;
+    ListenerRegistration scheduleRegistration;
+    ListenerRegistration liveMonitorRegistration;
+    private SharedPreferences sharedPreferences;
 private FlatButton medacrom;
     private TextView balanceText;;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db=FirebaseFirestore.getInstance();
+        disableOfflineData();
         setContentView(R.layout.activity_first);
         balanceText=findViewById(R.id.balanceText);
         nameText=findViewById(R.id.textView7);
@@ -64,6 +71,7 @@ private FlatButton medacrom;
         String username=sharedPreferences.getString("name",null);
         nameText.setText(username);
         imgview=findViewById(R.id.imageView);
+
         getLife();
       //  Glide.with(this).load(url).placeholder(R.mipmap.ic_launcher_round).centerCrop().fitCenter().override(50,50).error(R.color.red_error).into(imgview);
         Glide.with(getBaseContext()).load(url).asBitmap().centerCrop().override(100,100).into(new BitmapImageViewTarget(imgview) {
@@ -90,12 +98,27 @@ private FlatButton medacrom;
     String VideoId="";
     double balance;
 
+    @Override
+    protected void onDestroy() {
+        datachAllListener();
+        Log.d("distroyCall","Datach All");
+        super.onDestroy();
+    }
 
+    public void datachAllListener()
+{
+
+    liveMonitorRegistration.remove();
+
+    scheduleRegistration.remove();
+
+}
     public void realTimeUpdate()
     {
 
-        FirebaseFirestore db=FirebaseFirestore.getInstance();
-        db.collection("liveMonitor").addSnapshotListener(new EventListener<QuerySnapshot>() {
+       // FirebaseFirestore db=FirebaseFirestore.getInstance();
+     Query query=   db.collection("liveMonitor");
+     liveMonitorRegistration=query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
                 List<DocumentSnapshot> docs=queryDocumentSnapshots.getDocuments();
@@ -109,13 +132,17 @@ private FlatButton medacrom;
                     Log.d("videoId", VideoId);
 
                     startActivity(intent);
-                    finish();
+
                     processLife();
+                    datachAllListener();
+                    finish();
+
 
                 }
             }
         });
-        db.collection("schedule").addSnapshotListener(new EventListener<QuerySnapshot>() {
+      Query query1=  db.collection("schedule");
+      scheduleRegistration=query1.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 List<DocumentSnapshot> docs=queryDocumentSnapshots.getDocuments();
@@ -125,7 +152,7 @@ private FlatButton medacrom;
             }
         });
 
-        db.collection("userManage").document(info.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+     db.collection("userManage").document(info.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 balance=Double.parseDouble(""+documentSnapshot.get("balance"));
@@ -143,7 +170,7 @@ private FlatButton medacrom;
     int maxLife;
     public void getLife()
     {
-        FirebaseFirestore db=FirebaseFirestore.getInstance();
+       // FirebaseFirestore db=FirebaseFirestore.getInstance();
         db.collection("userManage").document(info.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -152,9 +179,16 @@ private FlatButton medacrom;
             }
         });
     }
+    public  void disableOfflineData()
+    {
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(false)
+                .build();
+        db.setFirestoreSettings(settings);
+    }
     public void processLife()
     {
-         FirebaseFirestore db=FirebaseFirestore.getInstance();
+        // FirebaseFirestore db=FirebaseFirestore.getInstance();
          db.collection("schedule").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
              @Override
              public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -211,9 +245,16 @@ private FlatButton medacrom;
        // finish();
     }
 
+    public void onBackPressed() {
+        datachAllListener();
+        finish();
+        //super.onBackPressed();
+    }
+
     public void goSettings(View view) {
         Intent intent=new Intent(FirstActivity.this,new SettingsActivity().getClass());
         startActivity(intent);
     }
+
 
 }

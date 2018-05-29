@@ -60,7 +60,7 @@
             <ImageView
                 android:id="@+id/imageView4"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="200sp"
                 app:srcCompat="@drawable/com_facebook_profile_picture_blank_portrait" />
 
         </RelativeLayout>
@@ -76,7 +76,7 @@
                 android:textSize="20sp"
                 android:textColor="@android:color/black"
                 android:textAlignment="center"
-                android:text="TextView" />
+                android:text="@string/name" />
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -90,7 +90,7 @@
                 android:textSize="15sp"
                 android:textColor="@android:color/black"
                 android:textAlignment="center"
-                android:text="APPLY REFERAL CODE" />
+                android:text="@string/user_referral_code" />
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -106,7 +106,7 @@
                 android:background="@drawable/btnshape"
                 android:textColor="@android:color/black"
                 android:textAlignment="center"
-                android:text="Referral code" />
+                android:text="@string/referral_code" />
         </RelativeLayout>
     </LinearLayout>
 

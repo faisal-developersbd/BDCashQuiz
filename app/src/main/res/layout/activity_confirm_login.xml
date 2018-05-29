@@ -40,7 +40,7 @@
                 android:ems="10"
                 android:textAlignment="center"
                 android:inputType="textPersonName"
-                android:text="user name" />
+                android:text="@string/name" />
             <TextView
                 android:id="@+id/emailText"
                 android:layout_width="match_parent"
@@ -48,7 +48,7 @@
                 android:textColor="@android:color/black"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="email" />
+                android:text="@string/email" />
 
             <EditText
                 android:id="@+id/phoneNumber"
@@ -57,14 +57,14 @@
                 android:ems="10"
                 android:textColor="@android:color/black"
                 android:inputType="textPersonName"
-                android:hint="phone number" />
+                android:hint="@string/mobile" />
 
             <com.dd.processbutton.FlatButton
                 android:id="@+id/btnConfirm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:pb_cornerRadius="25sp"
-                android:text="CONTINUE" />
+                android:text= "@string/continuebtn"/>
         </LinearLayout>
     </android.support.v7.widget.CardView>
 

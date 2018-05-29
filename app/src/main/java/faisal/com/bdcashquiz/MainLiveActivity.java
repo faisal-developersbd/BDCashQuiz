@@ -3,7 +3,6 @@ package faisal.com.bdcashquiz;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -11,18 +10,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.content.res.AppCompatResources;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.google.android.youtube.player.YouTubeBaseActivity;
-import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserInfo;
@@ -32,6 +31,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opentok.android.OpentokError;
 import com.opentok.android.Publisher;
@@ -50,7 +52,7 @@ import faisal.com.bdcashquiz.model.userManage;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class MainLiveActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener,Session.SessionListener,PublisherKit.PublisherListener {
+public class MainLiveActivity extends AppCompatActivity implements Session.SessionListener,PublisherKit.PublisherListener {
 private LinearLayout linearLayout;
 private WebView webview;
 private android.app.FragmentManager manager;
@@ -58,10 +60,18 @@ private VideoView videoView;
 private FloatingActionButton life1;
 private FloatingActionButton life2;
 private TextView watchTextView;
+ListenerRegistration userManageRegistration;
+ListenerRegistration liveMonitorRegistration;
+ListenerRegistration liveUserRegistration;
+ListenerRegistration aRegistration;
+ListenerRegistration bRegistration;
+ListenerRegistration cRegistration;
+ListenerRegistration dRegistration;
 private boolean messagedisplay;
     FloatingActionButton life3;
     FirebaseAuth mAuth;
     UserInfo info;
+    FirebaseFirestore db;
    // private YouTubePlayerView mYouTubePlayerView;
 private ProgressDialog mDialog;
     //public static final String APP_KEY="AIzaSyBgbP5yQ9KdRnl8GM9fqWxl-EQSNWkAFDg";
@@ -80,12 +90,14 @@ private ProgressDialog mDialog;
 
 
     private Session mSession;
-    private LinearLayout pub_container,sub_container;
+    private FrameLayout pub_container,sub_container;
 
-    private LinearLayout mPublisherViewContainer;
-    private LinearLayout mSubscriberViewContainer;
+    private FrameLayout mPublisherViewContainer;
+    private FrameLayout mSubscriberViewContainer;
     private Publisher mPublisher;
     private Subscriber mSubscriber;
+    private ListenerRegistration liveAttendRegistration;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +117,8 @@ private ProgressDialog mDialog;
          life1=findViewById(R.id.life1);
          life2=findViewById(R.id.life2);
          life3=findViewById(R.id.life3);
+         db=FirebaseFirestore.getInstance();
+        disableOfflineData();
         realTimeMonitorUpdate();
         liveAttendUser();
         //webview use to call own site
@@ -137,12 +151,34 @@ watchTextView=findViewById(R.id.watchText);
       //  manager.beginTransaction().remove(framgentQuestion).commit();
        // playVideo();
     }
+    public  void disableOfflineData()
+    {
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(false)
+                .build();
+        db.setFirestoreSettings(settings);
+    }
+
+    @Override
+    public void onBackPressed() {
+        datachAllListener();
+        finish();
+        //super.onBackPressed();
+    }
+
+    public void datachAllListener()
+    {
+       userManageRegistration.remove();
+       liveMonitorRegistration.remove();
+       liveAttendRegistration.remove();
+    }
     private boolean isGameStart=true;
     int gamelife;
 public void userManageStatus()
 {
-    FirebaseFirestore db=FirebaseFirestore.getInstance();
-    db.collection("userManage").whereEqualTo("photoUrl",""+info.getPhotoUrl()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+  //  FirebaseFirestore db=FirebaseFirestore.getInstance();
+   Query query= db.collection("userManage").whereEqualTo("photoUrl",""+info.getPhotoUrl());
+  userManageRegistration=query.addSnapshotListener(new EventListener<QuerySnapshot>() {
         @Override
         public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
           List<DocumentChange> documentChange=  queryDocumentSnapshots.getDocumentChanges();
@@ -231,8 +267,9 @@ public void displayLife(int life)
     {
         userManageStatus();
         //Toast.makeText(getBaseContext(),"User Id: "+info.getUid(),Toast.LENGTH_LONG).show();
-        FirebaseFirestore db=FirebaseFirestore.getInstance();
-        db.collection("liveMonitor").addSnapshotListener(new EventListener<QuerySnapshot>() {
+       // FirebaseFirestore db=FirebaseFirestore.getInstance();
+       Query query= db.collection("liveMonitor");
+       liveMonitorRegistration=query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
                 List<DocumentSnapshot> docs=queryDocumentSnapshots.getDocuments();
@@ -245,11 +282,14 @@ public void displayLife(int life)
                     Intent intent = new Intent(MainLiveActivity.this, FirstActivity.class);
 
                     startActivity(intent);
+                   onDisconnected(mSession);
+                   datachAllListener();
                     finish();
                 }
             }
         });
     }
+
   //  public void update
     public void playVideo()
     {
@@ -285,7 +325,7 @@ public void displayLife(int life)
         framgentQuestion=new FramgentQuestion();
         framgentQuestion.setQuestions(questions,gamelife);
         try {
-            manager.beginTransaction().replace(R.id.displayQuestionLayout, framgentQuestion).commit();
+            manager.beginTransaction().replace(R.id.subscriber_container, framgentQuestion).commit();
         }catch(Exception e)
         {
 
@@ -298,7 +338,7 @@ public void displayLife(int life)
         FirebaseAuth mAuth=FirebaseAuth.getInstance();
         UserInfo info=mAuth.getCurrentUser();
         HashMap<String,String> hashMap=new HashMap<>();
-        FirebaseFirestore db=FirebaseFirestore.getInstance();
+       // FirebaseFirestore db=FirebaseFirestore.getInstance();
         db.collection("liveuser").document(info.getUid()).set(hashMap);
     }
     ViewGroup.LayoutParams params;
@@ -307,7 +347,7 @@ public void displayLife(int life)
        // manager.beginTransaction().remove(framgentQuestion).commit();
      //   if(mYouTubePlayerView==null)
      //   mYouTubePlayerView=findViewById(R.id.youTubePlayerView);
-        FirebaseFirestore db=FirebaseFirestore.getInstance();
+       // FirebaseFirestore db=FirebaseFirestore.getInstance();
     //  params = mYouTubePlayerView.getLayoutParams();
         final CollectionReference docRef = db.collection("livequestion");
         manager.beginTransaction().remove(framgentQuestion).commit();
@@ -358,31 +398,31 @@ manager.beginTransaction().remove(framgentQuestion).commit();
     }
     boolean isFullscreen;
     private YouTubePlayer player;
-    @Override
-    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
-        if (Configuration.ORIENTATION_PORTRAIT == getResources().getConfiguration().orientation) {
-            this.player = youTubePlayer;
-            player.setFullscreenControlFlags(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_ORIENTATION);
-            player.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI);
-           player.setPlayerStyle(YouTubePlayer.PlayerStyle.MINIMAL);
-
-            player.setOnFullscreenListener(new YouTubePlayer.OnFullscreenListener()
-
-            {
-                @Override
-                public void onFullscreen(boolean b)
-                {
-                    isFullscreen = b;
-                }
-            });
-            if (VIDEL_ID != null && !wasRestored) {
-              //  youTubePlayer.loadVideo(VIDEL_ID);
-               // enableDisableView(mYouTubePlayerView,false);
-              //  mYouTubePlayerView.setClickable(false);
-              //  mYouTubePlayerView.setFocusable(false);
-            }
-
-        }
+//    @Override
+//    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
+//        if (Configuration.ORIENTATION_PORTRAIT == getResources().getConfiguration().orientation) {
+//            this.player = youTubePlayer;
+//            player.setFullscreenControlFlags(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_ORIENTATION);
+//            player.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI);
+//           player.setPlayerStyle(YouTubePlayer.PlayerStyle.MINIMAL);
+//
+//            player.setOnFullscreenListener(new YouTubePlayer.OnFullscreenListener()
+//
+//            {
+//                @Override
+//                public void onFullscreen(boolean b)
+//                {
+//                    isFullscreen = b;
+//                }
+//            });
+//            if (VIDEL_ID != null && !wasRestored) {
+//              //  youTubePlayer.loadVideo(VIDEL_ID);
+//               // enableDisableView(mYouTubePlayerView,false);
+//              //  mYouTubePlayerView.setClickable(false);
+//              //  mYouTubePlayerView.setFocusable(false);
+//            }
+//
+//        }
 
         //youTubePlayer.setPlaybackEventListener(false);
 //        youTubePlayer.setPlayerStateChangeListener(playerStateChangeListener);
@@ -405,11 +445,12 @@ manager.beginTransaction().remove(framgentQuestion).commit();
 //        {
 //           // youTubePlayer.cueVideo(VIDEL_ID);
 //        }
-    }
+   // }
     public void liveAttendUser()
     {
-        FirebaseFirestore db=FirebaseFirestore.getInstance();
-        db.collection("liveAttend").addSnapshotListener(new EventListener<QuerySnapshot>() {
+       // FirebaseFirestore db=FirebaseFirestore.getInstance();
+       Query query= db.collection("liveAttend");
+       liveAttendRegistration=query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @javax.annotation.Nullable FirebaseFirestoreException e) {
                 List<DocumentSnapshot> docs=queryDocumentSnapshots.getDocuments();
@@ -492,10 +533,10 @@ manager.beginTransaction().remove(framgentQuestion).commit();
         }
     };
 
-    @Override
-    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-
-    }
+//    @Override
+//    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+//
+//    }
 
 
 
