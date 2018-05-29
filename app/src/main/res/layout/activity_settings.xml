@@ -77,7 +77,87 @@
                 android:textColor="@android:color/black"
                 android:textAlignment="center"
                 android:text="@string/name" />
+
+
+
+
+
+
         </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <TextView
+
+                android:id="@+id/txtEmail"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+
+                android:text="@string/email"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textSize="20sp" />
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@+id/txtEmail"
+                android:src="@drawable/editp"
+                android:paddingLeft="10dp"/>
+
+
+
+
+
+
+        </RelativeLayout>
+
+
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <TextView
+
+                android:id="@+id/txtPhone"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+
+                android:text="Phone"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textSize="20sp" />
+            <ImageView
+                android:id="@+id/editPImg"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@+id/txtPhone"
+                android:src="@drawable/editp"
+                android:paddingLeft="10dp"/>
+
+
+
+
+
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></RelativeLayout>
+
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_marginTop="20sp"

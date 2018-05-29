@@ -34,21 +34,31 @@ import faisal.com.bdcashquiz.model.userManage;
 
 public class SettingsActivity extends AppCompatActivity {
     String m_Text;
-private TextView inputReferralCode;
+private TextView inputReferralCode,refmsg,txtPhone,txtEmail;
 private TextView referralCode;
 private FirebaseAuth mAuth;
 private UserInfo info;
 private userManage userData;
 private TextView userName;
-private ImageView userPic;
+private ImageView userPic,editPImg;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         Gson gson=new Gson();
+
         userData=gson.fromJson(getIntent().getStringExtra("data"),userManage.class);
         userName=findViewById(R.id.txtName);
         userPic=findViewById(R.id.userPic);
+        refmsg=findViewById(R.id.reftext);
+        txtPhone=findViewById(R.id.txtPhone);
+        txtEmail=findViewById(R.id.txtEmail);
+        editPImg=findViewById(R.id.editPImg);
+
+
+
 mAuth=FirebaseAuth.getInstance();
 info=mAuth.getCurrentUser();
       //  AppBarLayout appBarLayout=findViewById(R.id.appbar);
@@ -59,15 +69,119 @@ info=mAuth.getCurrentUser();
         actionBar.setTitle("Settings Activity");
         inputReferralCode=findViewById(R.id.inpref);
 
+
+        //Profile info.....................
+
+        Glide.with(getBaseContext()).load(userData.getPhotoUrl()).override(150,150).fitCenter().into(userPic);
+        userName.setText(userData.getName());
+        txtEmail.setText(userData.getEmail());
+        txtPhone.setText(userData.getPhoneNumber());
+         final String ref_code=userData.getReferral_code();
+         final String userName=userData.getName();
+       // Log.d("ref_code",ref_code);
+
+
+
+        if(ref_code!=null){
+
+        refmsg.setText("রেফারেল কোড ব্যবহার করা হয়েছে");
+        inputReferralCode.setText("কোড : "+ref_code);
+
+        }
+
+
+
+
+
         inputReferralCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                alaertDialog();
+                if(ref_code==null){
+                alaertDialog();}
+
             }
         });
-        Glide.with(getBaseContext()).load(userData.getPhotoUrl()).override(150,150).fitCenter().into(userPic);
-        userName.setText(userData.getName());
+
+        editPImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alaertDialog2(userName,"phoneNumber");
+
+            }
+        });
+
     }
+
+    private void alaertDialog2(final String userName, final String phone) {
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this);
+        builder.setTitle("Title");
+// I'm using fragment here so I'm using getView() to provide ViewGroup
+// but you can provide here any other instance of ViewGroup from your Fragment / Activity
+        // get prompts.xml view
+        LayoutInflater li = LayoutInflater.from(getBaseContext());
+        View promptsView = li.inflate(R.layout.promts, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                SettingsActivity.this);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText userInput = (EditText) promptsView
+                .findViewById(R.id.editTextDialogUserInput);
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                // get user input and set it to result
+                                // edit text
+                                m_Text=userInput.getText().toString();
+                                /*editProfile(userName,phone,m_Text);*/
+
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+
+
+    }
+
+ /*   private void editProfile(final String userName, String field, String value) {
+        Map<String,String> hmap=new HashMap<>();
+
+
+        hmap.put(field,value);
+        FirebaseFirestore  db=FirebaseFirestore.getInstance();
+        db.collection("userManage").document(userName).set(hmap).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+               // Log.d("datacheck","Update life from question fragment "+manage.toString());
+                Log.d("datacheck","Id "+userName);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("datacheck","error: "+e);
+            }
+        });
+
+    }*/
+
     void alaertDialog()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this);
@@ -97,7 +211,7 @@ info=mAuth.getCurrentUser();
                                 // edit text
                                 m_Text=userInput.getText().toString();
                                 checkValidity(m_Text);
-                               // Toast.makeText(getBaseContext(),"Input: "+m_Text,Toast.LENGTH_LONG).show();
+                               Toast.makeText(getBaseContext(),"Input: "+m_Text,Toast.LENGTH_LONG).show();
                             }
                         })
                 .setNegativeButton("Cancel",
@@ -162,6 +276,7 @@ info=mAuth.getCurrentUser();
         totLife=totLife+1;
         hmap.put("totalLife",""+totLife);
         hmap.put("gameLife",""+manage.getGameLife());
+        hmap.put("referral_code",m_Text);
         FirebaseFirestore  db=FirebaseFirestore.getInstance();
         db.collection("userManage").document(id).set(hmap).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

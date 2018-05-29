@@ -9,9 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -63,11 +65,13 @@ public class LeaderBoardActivity extends AppCompatActivity {
                 }
                 TextView balance=(TextView) convertView.findViewById(R.id.balanceId);
                 TextView name=(TextView) convertView.findViewById(R.id.nameId);
-                //ImageView image=(ImageView) convertView.findViewById(R.id.imageView);
+                ImageView image=(ImageView) convertView.findViewById(R.id.imgview);
 
-                balance.setText(arrayList.get(position).getBalance());
+                balance.setText(arrayList.get(position).getBalance()+" ৳ ");
                 name.setText(arrayList.get(position).getName());
-                //image.setText(arrayList.get(position).getImg());
+
+                Glide.with(getBaseContext()).load(arrayList.get(position).getImg()).override(150,150).fitCenter().into(image);
+               // image.setText(arrayList.get(position).getImg());
                 return convertView;
             }
         };
@@ -149,7 +153,7 @@ public class LeaderBoardActivity extends AppCompatActivity {
                     cklist.add(5);*/
 
                 for (DocumentSnapshot dc : docList) {
-                   // Log.d("userCheck", dc.getId() + ">>>" + dc.getData().get("Balance"));
+                   /*Log.d("userCheck", dc.getId() + ">>>" + dc.getData().get("balance"));*/
         try {
 
 
@@ -174,32 +178,43 @@ public class LeaderBoardActivity extends AppCompatActivity {
                     for (int j = 1; j < length - i; j++) {
 
 
-                        double var1 = Double.valueOf(addlist2.get(j - 1));
-
-                        String lsr=String.valueOf(var1);
-
-                        String name1 = addlist.get(j - 1);
-                        String img1 = addlist3.get(j - 1);
-
-                        double var2 = Double.valueOf(addlist2.get(j));
-                        String name2 = addlist.get(j);
-                        String img2 = addlist3.get(j);
 
 
-                        if (var1 < var2) {
-                            temp = var1;
-                            temp2 = name1;
-                            temp3 = img1;
-                            addlist2.set(j - 1, String.valueOf(var2));
-                            addlist.set(j - 1, name2);
-                            addlist3.set(j - 1, img2);
+                        try {
+                            double var1 = Double.valueOf(addlist2.get(j - 1));
 
-                            addlist2.set(j, String.valueOf(temp));
-                            addlist.set(j, temp2);
-                            addlist3.set(j, temp3);
+                            String lsr=String.valueOf(var1);
+
+                            String name1 = addlist.get(j - 1);
+                            String img1 = addlist3.get(j - 1);
+
+                            double var2 = Double.valueOf(addlist2.get(j));
+                            String name2 = addlist.get(j);
+                            String img2 = addlist3.get(j);
 
 
+                            if (var1 < var2) {
+                                temp = var1;
+                                temp2 = name1;
+                                temp3 = img1;
+                                /*Log.d("datGet",String.valueOf(var2));*/
+                                addlist2.set(j - 1, String.valueOf(var2));
+                                addlist.set(j - 1, name2);
+                                addlist3.set(j - 1, img2);
+
+                                addlist2.set(j, String.valueOf(temp));
+                                addlist.set(j, temp2);
+                                addlist3.set(j, temp3);
+
+
+                            }
                         }
+
+                       catch (Exception e){
+
+                       }
+
+
 
                     }
 
@@ -213,7 +228,7 @@ public class LeaderBoardActivity extends AppCompatActivity {
                     String balance=addlist2.get(i);
                     String img=addlist3.get(i);
 
-                    /*Log.d("datGet",String.valueOf(name)+">>>"+balance+">>>"+img);*/
+                    Log.d("datGet",String.valueOf(name)+">>>"+balance+">>>"+img);
                     Item item=new Item(balance,name,img);
                     arrayList.add(item);
 
