@@ -8,17 +8,23 @@ public class userManage {
     private String totalLife;
     private String gameLife;
     private String balance;
-
-    public userManage(String name, String email, String phoneNumber, String photoUrl, String totalLife, String gameLife) {
-        this.name = name;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.photoUrl = photoUrl;
-        this.totalLife = totalLife;
-        this.gameLife = gameLife;
-    }
+    private String referral_code;
 
     public userManage() {
+    }
+
+    @Override
+    public String toString() {
+        return "userManage{" +
+                "name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", photoUrl='" + photoUrl + '\'' +
+                ", totalLife='" + totalLife + '\'' +
+                ", gameLife='" + gameLife + '\'' +
+                ", balance='" + balance + '\'' +
+                ", referral_code='" + referral_code + '\'' +
+                '}';
     }
 
     public String getName() {
@@ -77,15 +83,22 @@ public class userManage {
         this.balance = balance;
     }
 
-    @Override
-    public String toString() {
-        return "userManage{" +
-                "name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", photoUrl='" + photoUrl + '\'' +
-                ", totalLife='" + totalLife + '\'' +
-                ", gameLife='" + gameLife + '\'' +
-                '}';
+    public String getReferral_code() {
+        return referral_code;
+    }
+
+    public void setReferral_code(String referral_code) {
+        this.referral_code = referral_code;
+    }
+
+    public userManage(String name, String email, String phoneNumber, String photoUrl, String totalLife, String gameLife, String balance, String referral_code) {
+        this.name = name;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.photoUrl = photoUrl;
+        this.totalLife = totalLife;
+        this.gameLife = gameLife;
+        this.balance = balance;
+        this.referral_code = referral_code;
     }
 }
