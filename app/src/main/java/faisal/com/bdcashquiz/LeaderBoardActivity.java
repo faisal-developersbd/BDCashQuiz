@@ -68,10 +68,15 @@ public class LeaderBoardActivity extends AppCompatActivity {
                 ImageView image=(ImageView) convertView.findViewById(R.id.imgview);
 
                 balance.setText(arrayList.get(position).getBalance()+" ৳ ");
-                name.setText(arrayList.get(position).getName());
+                int pos=position+1;
+
+                name.setText(pos+"."+arrayList.get(position).getName());
+
+                pos++;
 
                 Glide.with(getBaseContext()).load(arrayList.get(position).getImg()).override(150,150).fitCenter().into(image);
                // image.setText(arrayList.get(position).getImg());
+
                 return convertView;
             }
         };
@@ -220,7 +225,8 @@ public class LeaderBoardActivity extends AppCompatActivity {
 
                 }
 
-                for (int i = 0; i < addlist2.size(); i++) {
+                //'length 'for get all list
+                for (int i = 0; i < 8; i++) {
                    // String balance=addlist2.get(i);
 
 
