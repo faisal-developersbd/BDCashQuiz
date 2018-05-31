@@ -1,8 +1,8 @@
 package faisal.com.bdcashquiz;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,9 +21,8 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -44,7 +44,10 @@ private UserInfo info;
 private userManage userData;
 private TextView userName;
 private ImageView userPic,editPImg;
+private Button logOut;
 public String refCk="";
+private FirebaseAuth.AuthStateListener mAuthStateListener;
+
 
 
     @Override
@@ -60,6 +63,11 @@ public String refCk="";
         txtPhone=findViewById(R.id.txtPhone);
         txtEmail=findViewById(R.id.txtEmail);
         editPImg=findViewById(R.id.editPImg);
+
+        setUpAuth();
+
+        logOut=findViewById(R.id.button5);
+
 
 
 
@@ -157,7 +165,76 @@ info=mAuth.getCurrentUser();
             }
         });
 
+
+
+        logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                FirebaseAuth.getInstance().signOut();
+            }
+        });
+
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+       FirebaseAuth.getInstance().addAuthStateListener(mAuthStateListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FirebaseAuth.getInstance().removeAuthStateListener(mAuthStateListener);
+    }
+
+    public void setUpAuth(){
+mAuthStateListener=new FirebaseAuth.AuthStateListener() {
+    @Override
+    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+        FirebaseUser user=mAuth.getCurrentUser();
+
+        if (user != null) {
+            // User is signed in
+            Log.d("Auth", "onAuthStateChanged:signed_in:" + user.getUid());
+        } else {
+            // User is signed out
+            Log.d("Auth","onAuthStateChanged:signed_out");
+            startActivity(new Intent(SettingsActivity.this, FacebookLogin.class));
+        }
+
+
+
+    }
+};
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

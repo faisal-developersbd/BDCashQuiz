@@ -54,18 +54,26 @@ public class FacebookLogin extends AppCompatActivity {
 
         final String username = preferences.getString("name", null);
         final String phoneNumber = preferences.getString("phone", null);
-
-        if ((username != null && phoneNumber != null)) {
-            Intent intent = new Intent(FacebookLogin.this, FirstActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        else  if(mAuth.getCurrentUser()!=null)
+        UserInfo info=mAuth.getCurrentUser();
+        try {
+        if(info.getUid()!=null)
         {
-            Intent intent = new Intent(FacebookLogin.this, ConfirmLoginActivity.class);
-            startActivity(intent);
-            finish();
+            if ((username != null && phoneNumber != null)) {
+                Intent intent = new Intent(FacebookLogin.this, FirstActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            else {Intent intent = new Intent(FacebookLogin.this, ConfirmLoginActivity.class);
+                startActivity(intent);}
+
+
         }
+
+        }catch(Exception e)
+        {
+
+        }
+
 
 
         mCallbackMangager = CallbackManager.Factory.create();
