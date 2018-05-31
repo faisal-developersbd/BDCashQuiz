@@ -15,12 +15,15 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LeaderBoardActivity extends AppCompatActivity {
     FirebaseFirestore db;
@@ -140,6 +143,13 @@ public class LeaderBoardActivity extends AppCompatActivity {
 
 
     private void userSort() {
+        Map<String,String> hmap=new HashMap<>();
+        db.collection("userManage").document("q0IOnicenge8mTtfqfjagBZokUU2").collection("referral_codef").document("code").set(hmap).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+            }
+        });
         db.collection("userManage").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override

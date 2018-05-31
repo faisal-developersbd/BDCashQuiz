@@ -2,6 +2,7 @@ package faisal.com.bdcashquiz;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -20,6 +21,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -41,6 +44,7 @@ private UserInfo info;
 private userManage userData;
 private TextView userName;
 private ImageView userPic,editPImg;
+public String refCk="";
 
 
     @Override
@@ -61,6 +65,15 @@ private ImageView userPic,editPImg;
 
 mAuth=FirebaseAuth.getInstance();
 info=mAuth.getCurrentUser();
+
+
+
+
+
+
+
+
+
       //  AppBarLayout appBarLayout=findViewById(R.id.appbar);
         Toolbar tb=findViewById(R.id.toolbar);
         setSupportActionBar(tb);
@@ -76,18 +89,52 @@ info=mAuth.getCurrentUser();
         userName.setText(userData.getName());
         txtEmail.setText(userData.getEmail());
         txtPhone.setText(userData.getPhoneNumber());
+
+
          final String ref_code=userData.getReferral_code();
          final String userName=userData.getName();
        // Log.d("ref_code",ref_code);
 
+        FirebaseFirestore db=FirebaseFirestore.getInstance();
+        db.collection("userManage").document(mAuth.getUid()).collection("referral").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                try {
 
 
-        if(ref_code!=null){
+                    List<DocumentSnapshot> doclist = queryDocumentSnapshots.getDocuments();
+                    DocumentSnapshot document = doclist.get(0);
+                    Log.d("docTest", "Document: " + document.get("code"));
+
+                    refCk=document.get("code").toString();
+                    if(refCk!=""){
+                        refmsg.setText("রেফারেল কোড ব্যবহার করা হয়েছে");
+                        inputReferralCode.setText("কোড : "+refCk);
+                        inputReferralCode.setEnabled(false);
+
+                    }
+
+                }catch (Exception e){
+
+                    refCk="";
+
+
+                }
+
+            }
+
+        });
+
+
+
+
+
+        /*if(refCk!=""){
 
         refmsg.setText("রেফারেল কোড ব্যবহার করা হয়েছে");
-        inputReferralCode.setText("কোড : "+ref_code);
+        inputReferralCode.setText("কোড : "+refCk);
 
-        }
+        }*/
 
 
 
@@ -111,6 +158,8 @@ info=mAuth.getCurrentUser();
         });
 
     }
+
+
 
     private void alaertDialog2(final String userName, final String phone) {
 
@@ -240,6 +289,7 @@ info=mAuth.getCurrentUser();
                     if (!info.getUid().equals(document.getId())) {
                         if (manage != null) {
                             inputReferralCode.setText("" + m_Text);
+                            inputReferralCode.setEnabled(false);
                             userUpdate(document.getId(), manage);
                             updateLoggedUserDetails();
                         }
@@ -256,6 +306,16 @@ info=mAuth.getCurrentUser();
     public void updateLoggedUserDetails()
     {
         FirebaseFirestore db=FirebaseFirestore.getInstance();
+        Map<String,String> hmap=new HashMap<>();
+        hmap.put("code",m_Text);
+        db.collection("userManage").document(mAuth.getUid()).collection("referral").document("referral_code").set(hmap).addOnSuccessListener(new OnSuccessListener<Void>() {
+
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(SettingsActivity.this,"ok referaal",Toast.LENGTH_SHORT).show();
+            }
+        });
+
         db.collection("userManage").document(mAuth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -276,7 +336,7 @@ info=mAuth.getCurrentUser();
         totLife=totLife+1;
         hmap.put("totalLife",""+totLife);
         hmap.put("gameLife",""+manage.getGameLife());
-        hmap.put("referral_code",m_Text);
+       /* hmap.put("referral_code",m_Text);*/
         FirebaseFirestore  db=FirebaseFirestore.getInstance();
         db.collection("userManage").document(id).set(hmap).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
