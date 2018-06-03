@@ -76,15 +76,17 @@ public class FramgentQuestion extends Fragment {
         public void onTick(long l) {
             if(l/1000==1) {
                 setAllError();
-                liveAttend();
+
                 ansSubmit();
-            }
-            if(l/1000==3)
-            {
                 if(lifeCount>0)
-                ansQuestion.userAns(userAns);
+                    ansQuestion.userAns(userAns);
+            }
+            if(l/1000==5)
+            {
+
             }
         }
+
 public void setLifeCount(int life)
 {
     lifeCount=life;
@@ -95,8 +97,8 @@ public void setLifeCount(int life)
             optn1.setClickable(false);
             optn2.setClickable(false);
             optn3.setClickable(false);
+            liveAttend();
 
-            ansUpdate();
         }
     }
     public class MyTimer extends CountDownTimer {
@@ -127,7 +129,7 @@ timverview.setText(""+(l/1000));
             userAns=usAns;
            // else userAns="d";
 
-            AnsTimer timer=new AnsTimer(13000,1000);
+            AnsTimer timer=new AnsTimer(5000,1000);
             timverview.setBackground(getResources().getDrawable(R.drawable.btnshape));
             if(lifeCount==0)
                 timverview.setText(getString(R.string.message1));
@@ -423,6 +425,7 @@ public void liveAttend()
                    no=Integer.parseInt(""+document.get("number"));
                }
            }
+            ansUpdate();
 //           total=livea+liveb+livec+no;
 //           parsea=(livea*100)/total;
 //           parseb=(liveb*100)/total;

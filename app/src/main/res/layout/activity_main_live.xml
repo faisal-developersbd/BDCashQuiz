@@ -68,7 +68,7 @@
         <android.support.design.widget.AppBarLayout
             android:id="@+id/chatbarlayout"
             android:layout_width="100sp"
-            android:layout_height="100sp"
+            android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"

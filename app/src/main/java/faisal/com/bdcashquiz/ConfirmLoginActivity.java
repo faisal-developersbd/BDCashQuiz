@@ -95,7 +95,7 @@ db=FirebaseFirestore.getInstance();
                                                       hmap.put("name", username);
                                                       hmap.put("phoneNumber", phoneNumber);
                                                       hmap.put("email", email);
-                                                      hmap.put("totalLife", "1");
+                                                      hmap.put("totalLife", manage.getTotalLife());
                                                       hmap.put("gameLife", "0");
                                                       if (manage.getBalance() == null || manage.getBalance().equals(""))
                                                           hmap.put("balance", "0");
