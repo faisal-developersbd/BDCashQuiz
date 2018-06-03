@@ -12,6 +12,7 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +52,7 @@ private FirebaseAuth mAuth;
 private UserInfo info;
 private TextView lifeText;
 private userManage userData;
+private ImageButton imageButton2;
     private static final int RC_VIDEO_APP_PERM = 124;
     ListenerRegistration userManageRegistration;
     ListenerRegistration scheduleRegistration;
@@ -77,6 +79,15 @@ private FlatButton medacrom;
         String username=sharedPreferences.getString("name",null);
         nameText.setText(username);
         imgview=findViewById(R.id.imageView);
+        imageButton2=findViewById(R.id.imageButton2);
+
+        imageButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(FirstActivity.this,AboutActivity.class);
+                startActivity(intent);
+            }
+        });
 
         getLife();
       //  Glide.with(this).load(url).placeholder(R.mipmap.ic_launcher_round).centerCrop().fitCenter().override(50,50).error(R.color.red_error).into(imgview);
