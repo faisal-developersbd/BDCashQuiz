@@ -108,7 +108,8 @@
                 android:layout_marginTop="2dp"
                 android:layout_toEndOf="@+id/txtEmail"
                 android:src="@drawable/editp"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:id="@+id/editEImg"/>
 
 
 
@@ -153,6 +154,13 @@
         </RelativeLayout>
 
 
+
+
+
+
+
+
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></RelativeLayout>
@@ -188,6 +196,16 @@
                 android:textAlignment="center"
                 android:text="@string/referral_code" />
         </RelativeLayout>
+
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Account Information"
+            android:id="@+id/accountBT"
+            />
+
     </LinearLayout>
 
 </RelativeLayout>

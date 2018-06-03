@@ -11,9 +11,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,8 +45,8 @@ private FirebaseAuth mAuth;
 private UserInfo info;
 private userManage userData;
 private TextView userName;
-private ImageView userPic,editPImg;
-private Button logOut;
+private ImageView userPic,editPImg,editEImg;
+private Button logOut,accountBT;
 public String refCk="";
 private FirebaseAuth.AuthStateListener mAuthStateListener;
 
@@ -63,10 +65,11 @@ private FirebaseAuth.AuthStateListener mAuthStateListener;
         txtPhone=findViewById(R.id.txtPhone);
         txtEmail=findViewById(R.id.txtEmail);
         editPImg=findViewById(R.id.editPImg);
-
+        editEImg=findViewById(R.id.editEImg);
         setUpAuth();
 
         logOut=findViewById(R.id.button5);
+        accountBT=findViewById(R.id.accountBT);
 
 
 
@@ -160,12 +163,25 @@ info=mAuth.getCurrentUser();
         editPImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                alaertDialog2(userName,"phoneNumber");
+                alaertDialog2("phoneNumber");
 
             }
         });
 
+        editEImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alaertDialog3("email");
+            }
+        });
 
+
+        accountBT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertdialogAccount();
+            }
+        });
 
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,6 +192,8 @@ info=mAuth.getCurrentUser();
         });
 
     }
+
+
 
     @Override
     protected void onStart() {
@@ -232,42 +250,112 @@ mAuthStateListener=new FirebaseAuth.AuthStateListener() {
 
 
 
-
-
-
-
-
-
-    private void alaertDialog2(final String userName, final String phone) {
-
+    private void alertdialogAccount() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this);
         builder.setTitle("Title");
-// I'm using fragment here so I'm using getView() to provide ViewGroup
-// but you can provide here any other instance of ViewGroup from your Fragment / Activity
-        // get prompts.xml view
+
         LayoutInflater li = LayoutInflater.from(getBaseContext());
-        View promptsView = li.inflate(R.layout.promts, null);
+        View promptsView = li.inflate(R.layout.promts2, null);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 SettingsActivity.this);
 
-        // set prompts.xml to alertdialog builder
+
         alertDialogBuilder.setView(promptsView);
 
-        final EditText userInput = (EditText) promptsView
-                .findViewById(R.id.editTextDialogUserInput);
 
-        // set dialog message
+
+         final EditText accountName=promptsView.findViewById(R.id.acountName);
+        final Spinner accountType=promptsView.findViewById(R.id.acountType);
+        final EditText accountNumber=promptsView.findViewById(R.id.acountNumber);
+
+
+        // ..................................Get Acount Information.....................
+        FirebaseFirestore db2=FirebaseFirestore.getInstance();
+
+
+        db2.collection("userManage").document(mAuth.getUid()).collection("account").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                try {
+
+
+                    List<DocumentSnapshot> doclist = queryDocumentSnapshots.getDocuments();
+                    DocumentSnapshot document = doclist.get(0);
+                    Log.d("docTest", "Document: " + document.get("Type"));
+
+                    // refCk=document.get("code").toString();
+
+                    accountName.setText(document.get("Name").toString());
+                     accountType.setSelection(((ArrayAdapter<String>)accountType.getAdapter()).getPosition(document.get("Type").toString()));
+                    accountNumber.setText(document.get("Number").toString());
+                                        /*    if(refCk!=""){
+                                                refmsg.setText("রেফারেল কোড ব্যবহার করা হয়েছে");
+                                                inputReferralCode.setText("কোড : "+refCk);
+                                                inputReferralCode.setEnabled(false);
+
+                                            }*/
+
+                }catch (Exception e){
+
+                    Toast.makeText(SettingsActivity.this,"No Data Found Add Account Information",Toast.LENGTH_SHORT).show();
+
+
+
+                }
+
+            }
+
+        });
+
+
+
+
         alertDialogBuilder
                 .setCancelable(false)
-                .setPositiveButton("OK",
+                .setPositiveButton("Save",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
                                 // get user input and set it to result
                                 // edit text
-                                m_Text=userInput.getText().toString();
-                                /*editProfile(userName,phone,m_Text);*/
+
+                              //  m_Text=userInput.getText().toString();
+
+
+
+
+
+
+
+
+
+
+
+
+                                //.....................Save Account Information .....................
+                               if(accountType.getSelectedItem().toString().equals("CHOOSE ONE")){
+                                   Toast.makeText(SettingsActivity.this,"Please Choose Acount Type",Toast.LENGTH_SHORT).show();
+                               }
+                               else if(accountNumber.getText().toString().equals("")){
+                                    Toast.makeText(SettingsActivity.this,"Please Give Account Number",Toast.LENGTH_SHORT).show();
+                                }
+
+                               else {
+                                   FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                   Map<String, String> hmap = new HashMap<>();
+                                   hmap.put("Name", accountName.getText().toString());
+                                   hmap.put("Type", accountType.getSelectedItem().toString());
+                                   hmap.put("Number", accountNumber.getText().toString());
+                                   db.collection("userManage").document(mAuth.getUid()).collection("account").document("account_info").set(hmap).addOnSuccessListener(new OnSuccessListener<Void>() {
+
+                                       @Override
+                                       public void onSuccess(Void aVoid) {
+                                           Toast.makeText(SettingsActivity.this, "account Add", Toast.LENGTH_SHORT).show();
+                                       }
+                                   });
+                               }
+                                //editProfile(m_Text);
 
                             }
                         })
@@ -284,6 +372,213 @@ mAuthStateListener=new FirebaseAuth.AuthStateListener() {
         // show it
         alertDialog.show();
 
+
+    }
+
+
+
+
+
+    private void alaertDialog2( final String phone) {
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this);
+        builder.setTitle("Title");
+// I'm using fragment here so I'm using getView() to provide ViewGroup
+// but you can provide here any other instance of ViewGroup from your Fragment / Activity
+        // get prompts.xml view
+        LayoutInflater li = LayoutInflater.from(getBaseContext());
+        View promptsView = li.inflate(R.layout.promts, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                SettingsActivity.this);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+        alertDialogBuilder.setTitle("");
+        final TextView txtview=promptsView.findViewById(R.id.textView1);
+        txtview.setText("মোবাইল নাম্বার পরিবর্তনঃ");
+
+
+
+        final EditText userInput = (EditText) promptsView
+                .findViewById(R.id.editTextDialogUserInput);
+
+
+        userInput.setText(txtPhone.getText().toString());
+        userInput.selectAll();
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                // get user input and set it to result
+                                // edit text
+
+                                m_Text=userInput.getText().toString();
+
+                                FirebaseFirestore db=FirebaseFirestore.getInstance();
+                                db.collection("userManage").document(mAuth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                        userManage manage=documentSnapshot.toObject(userManage.class);
+                                        userUpdatePhone(documentSnapshot.getId(),manage,m_Text);
+                                        txtPhone.setText(m_Text);
+                                        Toast.makeText(SettingsActivity.this,"মোবাইল নাম্বার পরিবর্তন সফল হয়েছে",Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                                //editProfile(m_Text);
+
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+
+
+    }
+
+
+
+
+    private void alaertDialog3( final String Email) {
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this);
+        builder.setTitle("Title");
+// I'm using fragment here so I'm using getView() to provide ViewGroup
+// but you can provide here any other instance of ViewGroup from your Fragment / Activity
+        // get prompts.xml view
+        LayoutInflater li = LayoutInflater.from(getBaseContext());
+        View promptsView = li.inflate(R.layout.promts, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                SettingsActivity.this);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+        alertDialogBuilder.setTitle("");
+        final TextView txtview=promptsView.findViewById(R.id.textView1);
+        txtview.setText("ইমেইল পরিবর্তনঃ ");
+
+
+
+        final EditText userInput = (EditText) promptsView
+                .findViewById(R.id.editTextDialogUserInput);
+
+
+        userInput.setText(txtEmail.getText().toString());
+        userInput.selectAll();
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                // get user input and set it to result
+                                // edit text
+
+                                m_Text=userInput.getText().toString();
+
+                                FirebaseFirestore db=FirebaseFirestore.getInstance();
+                                db.collection("userManage").document(mAuth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                        userManage manage=documentSnapshot.toObject(userManage.class);
+                                        userUpdateEmail(documentSnapshot.getId(),manage,m_Text);
+                                        txtEmail.setText(m_Text);
+                                        Toast.makeText(SettingsActivity.this,"ইমেইল পরিবর্তন সফল হয়েছে",Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                                //editProfile(m_Text);
+
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+
+
+    }
+
+    private void userUpdateEmail(final String id, final userManage manage, String newEmail) {
+
+        {
+            Map<String,String> hmap=new HashMap<>();
+            hmap.put("name",manage.getName());
+            hmap.put("phoneNumber",manage.getPhoneNumber());
+            hmap.put("email",newEmail);
+            hmap.put("photoUrl",manage.getPhotoUrl());
+            hmap.put("balance",manage.getBalance());
+
+            hmap.put("totalLife",""+manage.getTotalLife());
+            hmap.put("gameLife",""+manage.getGameLife());
+            /* hmap.put("referral_code",m_Text);*/
+            FirebaseFirestore  db=FirebaseFirestore.getInstance();
+            db.collection("userManage").document(id).set(hmap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d("datacheck","Update life from question fragment "+manage.toString());
+                    Log.d("datacheck","Id "+id);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("datacheck","error: "+e);
+                }
+            });
+        }
+    }
+
+    private void userUpdatePhone(final String id, final userManage manage, String newPhone) {
+        {
+            Map<String,String> hmap=new HashMap<>();
+            hmap.put("name",manage.getName());
+            hmap.put("phoneNumber",newPhone);
+            hmap.put("email",manage.getEmail());
+            hmap.put("photoUrl",manage.getPhotoUrl());
+            hmap.put("balance",manage.getBalance());
+
+            hmap.put("totalLife",""+manage.getTotalLife());
+            hmap.put("gameLife",""+manage.getGameLife());
+            /* hmap.put("referral_code",m_Text);*/
+            FirebaseFirestore  db=FirebaseFirestore.getInstance();
+            db.collection("userManage").document(id).set(hmap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d("datacheck","Update life from question fragment "+manage.toString());
+                    Log.d("datacheck","Id "+id);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("datacheck","error: "+e);
+                }
+            });
+        }
 
     }
 
