@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AboutActivity"
+    android:orientation="vertical"
+    android:background="@color/colorDefault"
+
+    >
+
+
+
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="About"
+    android:textAlignment="center"
+    android:textSize="30dp"
+    android:layout_marginTop="10dp"
+    android:textColor="@color/blue_pressed"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        >
+
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/flat_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@+id/raised_btn"
+
+            android:background="@color/common_google_signin_btn_text_dark_default"
+            android:drawableLeft="@drawable/play2"
+
+            android:paddingLeft="30dp"
+            android:text="   How To Play"
+            android:textSize="20dp"
+            android:gravity="center_vertical"
+
+
+
+            tools:ignore="UnknownId" />
+
+        <android.support.v7.widget.AppCompatButton
+           android:id="@+id/faq_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="   FAQ's"
+            android:layout_below="@+id/flat_btn"
+            android:background="@color/common_google_signin_btn_text_dark_default"
+            android:textSize="20dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:drawableLeft="@drawable/faq"
+            android:gravity="center_vertical"
+
+            />
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/help_btn"
+            android:layout_below="@+id/faq_btn"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:background="@color/common_google_signin_btn_text_dark_default"
+            android:text="   Get Help"
+            android:textSize="20dp"
+            android:paddingLeft="30dp"
+            android:drawableLeft="@drawable/get_help"
+            android:gravity="center_vertical"
+
+            />
+        <android.support.v7.widget.AppCompatButton
+
+            android:id="@+id/rate_btn"
+            android:layout_below="@+id/help_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:background="@color/common_google_signin_btn_text_dark_default"
+            android:text="   Rate us"
+            android:textSize="20dp"
+            android:paddingLeft="30dp"
+            android:drawableLeft="@drawable/rate2"
+            android:gravity="center_vertical"
+
+            />
+
+
+
+
+
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -44,6 +44,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.2'
 
     implementation 'com.google.firebase:firebase-messaging:17.0.0'
+    //..............Design................
+    implementation 'com.github.dimorinny:floating-text-button:0.0.4'
 
 
 }
