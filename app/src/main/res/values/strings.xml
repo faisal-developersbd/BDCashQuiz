@@ -2,8 +2,8 @@
     <string name="app_name"><b>মেধা</b></string>
     <string name="title_activity_login2">Sign in</string>
 
-    <string name="line1"><b>Tomorrow 1 AM GMT+06:00</b></string>
-    <string name="line2"><b>$ 5,000 prize</b></string>
+    <string name="line1"><b> </b></string>
+    <string name="line2"><b> </b></string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
@@ -39,13 +39,13 @@
     <string name="time_up">সময় শেষ</string>
     <string name="user_referral_code">
 রেফারেল কোড ব্যবহার করুন</string>
- <string name="name"> নাম</string>
- <string name="mobile">  মোবাইল নম্বর</string>
+    <string name="name"> নাম</string>
+    <string name="mobile">  মোবাইল নম্বর</string>
     <string name="continuebtn">কনফার্ম</string>
- <string name="email">
+    <string name="email">
  ই-মেইল</string>
     <string name="get_more">আরও সুযোগ</string>
-<string name="usr_reffaral_code_text">আপনার রেফারেল কোড </string>
+    <string name="usr_reffaral_code_text">আপনার রেফারেল কোড </string>
     <string name="shareText">শেয়ার</string>
     <string name="share_message1">হ্যালো, আমি মেধা কুইয এ নিয়মিত অংশগ্রহণ করি আপনিও অংসগ্রহণ করতে পারেন। আমার কোড  </string>
     <string name="share_message2"> ব্যবহার করুন। ডাউনলোড করতে এই লিংকটি অনুসরণ করুন।

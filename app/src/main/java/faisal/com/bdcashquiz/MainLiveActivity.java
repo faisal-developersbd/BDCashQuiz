@@ -284,12 +284,13 @@ public void displayLife(int life)
                 String isLive=""+document.get("live");
 
                 if(isLive.equals("false")) {
-                    Intent intent = new Intent(MainLiveActivity.this, FirstActivity.class);
+                    Intent intent = new Intent(MainLiveActivity.this, WinnerActivity.class);
 
-                    startActivity(intent);
+
                    onDisconnected(mSession);
                    datachAllListener();
                     finish();
+                    startActivity(intent);
                 }
             }
         });
