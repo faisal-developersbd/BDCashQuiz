@@ -50,4 +50,12 @@
     <string name="share_message1">হ্যালো, আমি মেধা কুইয এ নিয়মিত অংশগ্রহণ করি আপনিও অংসগ্রহণ করতে পারেন। আমার কোড  </string>
     <string name="share_message2"> ব্যবহার করুন। ডাউনলোড করতে এই লিংকটি অনুসরণ করুন।
     </string>
+
+
+    <string-array name="acc_type">
+
+        <item> CHOOSE ONE </item>
+        <item>DBBL</item>
+        <item>BKASH</item>
+    </string-array>
 </resources>
