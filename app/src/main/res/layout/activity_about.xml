@@ -6,24 +6,51 @@
     android:layout_height="match_parent"
     tools:context=".AboutActivity"
     android:orientation="vertical"
-    android:background="@color/colorDefault"
+    android:background="@color/backgroundLayout"
 
     >
 
 
-
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="About"
-    android:textAlignment="center"
-    android:textSize="30dp"
-    android:layout_marginTop="10dp"
-    android:textColor="@color/blue_pressed"/>
-    <RelativeLayout
-        android:layout_width="wrap_content"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:elevation="4sp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_alignParentLeft="true"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:text="SETTINGS ACTIVITY" />
+
+
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@android:color/white"
+
         >
 
 
@@ -96,6 +123,6 @@
 
 
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

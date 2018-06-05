@@ -2,7 +2,9 @@ package faisal.com.bdcashquiz;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.GridView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -22,6 +24,14 @@ private FirebaseFirestore db;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_winner);
+
+
+        Toolbar tb=findViewById(R.id.toolbar);
+        setSupportActionBar(tb);
+        ActionBar actionBar=getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("ABOUT");
+
 
         gridView=findViewById(R.id.winnerGrid);
         itemList=new ArrayList<>();
