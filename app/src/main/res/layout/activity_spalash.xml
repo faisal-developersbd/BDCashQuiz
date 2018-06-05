@@ -4,14 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+
+
     tools:context=".SpalashActivity">
 
     <ImageView
         android:id="@+id/spalashIv"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:src="@mipmap/ic_launchern_round"
-        android:foregroundGravity="center"/>
+        app:srcCompat="@mipmap/ic_launcher_foreground"
+        android:foregroundGravity="center"
+        android:layout_centerVertical="true"
+        />
+    <TextView
+        android:id="@+id/app_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+       android:foregroundGravity="center"
+        android:layout_below="@+id/spalashIv"
+        android:gravity="center"
+        android:layout_marginTop="15dp"
+        android:textSize="25dp"
+        android:textColor="#0F6C50"
+
+        />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\u00A9 SMAC Technology"
+        android:foregroundGravity="center"
+        android:layout_below="@+id/app_name"
+        android:gravity="center"
+        android:layout_marginTop="115dp"
+        android:textSize="10dp"
+        android:textColor="#0F6C50"
+
+        />
 
 </RelativeLayout>
