@@ -49,6 +49,9 @@ dependencies {
 
     //Floading List View...............
     implementation 'com.ramotion.foldingcell:folding-cell:1.2.2'
+    //Circle Image.................
+
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
 
 
 }
