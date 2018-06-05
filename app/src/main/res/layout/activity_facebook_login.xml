@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="200sp"
         android:layout_marginTop="50sp"
-        app:srcCompat="@mipmap/ic_launchern_round" />
+        app:srcCompat="@drawable/medhalogo" />
 
     <com.facebook.login.widget.LoginButton
         android:layout_marginTop="30sp"
