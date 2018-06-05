@@ -236,7 +236,7 @@ public class LeaderBoardActivity extends AppCompatActivity {
                 }
 
                 //'length 'for get all list
-                for (int i = 0; i < 8; i++) {
+                for (int i = 0; i < length; i++) {
                    // String balance=addlist2.get(i);
 
 

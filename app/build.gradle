@@ -47,6 +47,9 @@ dependencies {
     //..............Design................
     implementation 'com.github.dimorinny:floating-text-button:0.0.4'
 
+    //Floading List View...............
+    implementation 'com.ramotion.foldingcell:folding-cell:1.2.2'
+
 
 }
 apply plugin: 'com.google.gms.google-services'
