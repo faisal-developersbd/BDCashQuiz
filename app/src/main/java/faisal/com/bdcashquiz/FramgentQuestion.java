@@ -79,7 +79,7 @@ public class FramgentQuestion extends Fragment {
 
                 ansSubmit();
                 if(lifeCount>0)
-                    ansQuestion.userAns(userAns);
+                    ansQuestion.userAns(userAns+questions.getNo());
             }
             if(l/1000==5)
             {
