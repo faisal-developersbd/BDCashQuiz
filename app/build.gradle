@@ -52,6 +52,11 @@ dependencies {
     //Circle Image.................
 
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    //Admob..................
+    implementation 'com.google.android.gms:play-services-ads:15.0.0'
+
+    //AppRate..................
+    implementation 'com.github.MSF-Jarvis:AppRate:v1.2'
 
 
 }

@@ -82,7 +82,7 @@ private ProgressDialog mDialog;
 
     private  static  String API_KEY="46125722";
     private static String SESSION_ID="1_MX40NjEyNTcyMn5-MTUyNzMyNzcyNjk5OX5PNjdCUXhVVEw1MTZINmN0eWNzbWQxbW5-fg";
-    private static String TOKEN="T1==cGFydG5lcl9pZD00NjEyNTcyMiZzaWc9MWU1YmIyYzIzYzZkZDA1MzM3NzYyNjBkMjMwYzBmOTI3Mzc3NzIzMDpzZXNzaW9uX2lkPTFfTVg0ME5qRXlOVGN5TW41LU1UVXlOek15TnpjeU5qazVPWDVQTmpkQ1VYaFZWRXcxTVRaSU5tTjBlV056YldReGJXNS1mZyZjcmVhdGVfdGltZT0xNTI3NDkwODE3Jm5vbmNlPTAuNzIyMjM0NzU4NDc4NzY3JnJvbGU9c3Vic2NyaWJlciZleHBpcmVfdGltZT0xNTI4MDk1NjE3JmNvbm5lY3Rpb25fZGF0YT1TdWJzY3JpYmVyJmluaXRpYWxfbGF5b3V0X2NsYXNzX2xpc3Q9" ;
+    private static String TOKEN="T1==cGFydG5lcl9pZD00NjEyNTcyMiZzaWc9Yjk4M2Q1ZmZlMDg0N2RhODQzZjUxZjBiYzcyMDhkMWE0NTBiMzYzYjpzZXNzaW9uX2lkPTFfTVg0ME5qRXlOVGN5TW41LU1UVXlOek15TnpjeU5qazVPWDVQTmpkQ1VYaFZWRXcxTVRaSU5tTjBlV056YldReGJXNS1mZyZjcmVhdGVfdGltZT0xNTMwMDEwMTA3Jm5vbmNlPTAuMDg4NTAzMDg3OTQwMTEyMyZyb2xlPXN1YnNjcmliZXImZXhwaXJlX3RpbWU9MTUzMDYxNDkwNyZpbml0aWFsX2xheW91dF9jbGFzc19saXN0PQ==" ;
     private static String LOG_TAG=MainActivity.class.getSimpleName();
     private static final int PC_SETTINGS=123;
     private static final int RC_SETTINGS_SCREEN_PERM = 123;

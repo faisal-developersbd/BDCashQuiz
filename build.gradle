@@ -27,6 +27,9 @@ allprojects {
 
         //.........Floating Text Button.........
         maven { url "https://jitpack.io" }
+
+        //..........App Rate...............
+        maven { url "https://jitpack.io" }
     }
 }
 

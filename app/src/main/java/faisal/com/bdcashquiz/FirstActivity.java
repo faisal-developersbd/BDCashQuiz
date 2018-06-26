@@ -20,6 +20,9 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.dd.processbutton.FlatButton;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -53,6 +56,8 @@ private UserInfo info;
 private TextView lifeText;
 private userManage userData;
 private ImageButton imageButton2;
+
+private AdView mAdView;
     private static final int RC_VIDEO_APP_PERM = 124;
     ListenerRegistration userManageRegistration;
     ListenerRegistration scheduleRegistration;
@@ -66,6 +71,15 @@ private FlatButton medacrom;
         db=FirebaseFirestore.getInstance();
         new DisableOfflineData().disableOfflineData(db);
         setContentView(R.layout.activity_first);
+
+        //..............Admob...........
+
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+
         balanceText=findViewById(R.id.balanceText);
         nameText=findViewById(R.id.textView7);
         amountText=findViewById(R.id.amountText);
