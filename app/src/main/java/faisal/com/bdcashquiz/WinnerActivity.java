@@ -25,13 +25,16 @@ private FirebaseFirestore db;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_winner);
 
+try {
+    Toolbar tb = findViewById(R.id.toolbar);
+    setSupportActionBar(tb);
+    ActionBar actionBar = getSupportActionBar();
+    actionBar.setDisplayHomeAsUpEnabled(true);
+    actionBar.setTitle("ABOUT");
+}catch(Exception e)
+{
 
-        Toolbar tb=findViewById(R.id.toolbar);
-        setSupportActionBar(tb);
-        ActionBar actionBar=getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle("ABOUT");
-
+}
 
         gridView=findViewById(R.id.winnerGrid);
         itemList=new ArrayList<>();
