@@ -7,7 +7,7 @@
     android:background="@color/backgroundLayout"
     android:orientation="vertical"
 
-    tools:context=".FacebookLogin">
+    tools:context="net.smactechnology.medha.FacebookLogin">
 
 
     <ImageView

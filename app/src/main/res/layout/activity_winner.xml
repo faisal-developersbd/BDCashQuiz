@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:padding="4sp"
     android:background="@color/backgroundLayout"
-    tools:context=".WinnerActivity">
+    tools:context="net.smactechnology.medha.WinnerActivity">
 
     <TextView
         android:id="@+id/textView12"

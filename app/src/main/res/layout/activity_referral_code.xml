@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10sp"
-    tools:context=".ReferralCodeActivity">
+    tools:context="net.smactechnology.medha.ReferralCodeActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="faisal.com.bdcashquiz">
+    package="net.smactechnology.medha">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -19,31 +19,31 @@
         android:roundIcon="@drawable/medhalogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity" />
-        <activity android:name=".LoginActivity2">
+        <activity android:name="net.smactechnology.medha.MainActivity" />
+        <activity android:name="net.smactechnology.medha.LoginActivity2">
             >
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name="net.smactechnology.medha.LoginActivity"
             android:label="@string/title_activity_login2" />
         <activity
-            android:name=".LoginActivity3"
+            android:name="net.smactechnology.medha.LoginActivity3"
             android:label="@string/title_activity_login3" />
         <activity
-            android:name=".MainLiveActivity"
+            android:name="net.smactechnology.medha.MainLiveActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|layoutDirection"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".TestDesignActivity"
+            android:name="net.smactechnology.medha.TestDesignActivity"
             android:label="@string/title_activity_test_design"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".FirstActivity"
+            android:name="net.smactechnology.medha.FirstActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Registration" />
-        <activity android:name=".VerifyCodeActivity" />
-        <activity android:name=".UserProfile" />
+        <activity android:name="net.smactechnology.medha.Registration" />
+        <activity android:name="net.smactechnology.medha.VerifyCodeActivity" />
+        <activity android:name="net.smactechnology.medha.UserProfile" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -65,43 +65,43 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".FacebookLogin">
+        <activity android:name="net.smactechnology.medha.FacebookLogin">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ConfirmLoginActivity" />
+        <activity android:name="net.smactechnology.medha.ConfirmLoginActivity" />
         <activity
-            android:name=".ReferralCodeActivity"
+            android:name="net.smactechnology.medha.ReferralCodeActivity"
             android:label="@string/extra_life"
             android:theme="@style/AppTheme2">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".FirstActivity" />
+                android:value="net.smactechnology.medha.FirstActivity" />
         </activity>
-        <activity android:name=".LeaderBoardActivity" />
-        <activity android:name=".SettingsActivity">
+        <activity android:name="net.smactechnology.medha.LeaderBoardActivity" />
+        <activity android:name="net.smactechnology.medha.SettingsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".FirstActivity" />
+                android:value="net.smactechnology.medha.FirstActivity" />
         </activity>
 
-        <service android:name=".MyFirebaseInstanceIDService">
+        <service android:name="net.smactechnology.medha.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".MyFirebaseMessagingService">
+        <service android:name="net.smactechnology.medha.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
 
-        <activity android:name=".AboutActivity" />
-        <activity android:name=".SpalashActivity">
+        <activity android:name="net.smactechnology.medha.AboutActivity" />
+        <activity android:name="net.smactechnology.medha.SpalashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -110,10 +110,10 @@
         </activity>
 
 
-        <activity android:name=".WinnerActivity">
+        <activity android:name="net.smactechnology.medha.WinnerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".FirstActivity" />
+                android:value="net.smactechnology.medha.FirstActivity" />
         </activity>
 
 

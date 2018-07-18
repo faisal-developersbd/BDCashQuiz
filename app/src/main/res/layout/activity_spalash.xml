@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
 
 
-    tools:context=".SpalashActivity">
+    tools:context="net.smactechnology.medha.SpalashActivity">
 
     <ImageView
         android:id="@+id/spalashIv"

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
 
-    tools:context=".MainLiveActivity">
+    tools:context="net.smactechnology.medha.MainLiveActivity">
 
 
     <android.support.constraint.ConstraintLayout
