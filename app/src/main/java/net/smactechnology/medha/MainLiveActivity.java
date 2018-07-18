@@ -557,6 +557,7 @@ manager.beginTransaction().remove(framgentQuestion).commit();
     @Override
     public void onDisconnected(Session session) {
         Log.i(LOG_TAG, "Session Disconnected");
+        session.disconnect();
     }
 
     @Override
